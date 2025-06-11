@@ -1,0 +1,92 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #d3935c;
+  --primary-color-50: #d3935c40;
+}
+
+*::selection {
+  background-color: #00000080;
+  color: white;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+}
+
+::placeholder {
+  user-select: none;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.customSelect__control {
+  background-color: white !important;
+  color: black !important;
+  padding: 2px !important;
+  border-width: 2px !important;
+  border-radius: 12px !important;
+  border-color: var(--primary-color-50) !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+  user-select: none !important;
+}
+
+.customSelect__control--is-focused {
+  border-color: var(--primary-color) !important;
+}
+
+.customSelect__placeholder {
+  color: #797979 !important;
+}
+
+.customSelect__single-value {
+  color: black !important;
+}
+
+.customSelect__menu {
+  z-index: 100000 !important;
+  background-color: white !important;
+}
+
+.customSelect__option {
+  color: black !important;
+  background-color: white !important;
+}
+
+.customSelect__option--is-focused {
+  background-color: #f0f0f0 !important;
+}
+
+.link {
+  @apply text-[var(--primary-color)] opacity-75 hover:opacity-100 active:opacity-75;
+}
+
+.primaryBtn {
+  @apply select-none w-fit bg-[var(--primary-color)] text-white font-bold px-4 py-2 rounded-full cursor-pointer transition-all hover:scale-105 active:scale-100 disabled:bg-black/25 disabled:text-transparent disabled:cursor-not-allowed;
+}
+
+.actionBtn {
+  @apply py-1 px-3 z-10;
+}
+
+.leaflet-container {
+  border: 2px solid var(--primary-color)/25;
+}
+
+body.react-confirm-alert-body-element {
+  overflow: auto !important;
+}

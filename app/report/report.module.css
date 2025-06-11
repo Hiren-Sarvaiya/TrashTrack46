@@ -1,0 +1,25 @@
+.customCheckbox,
+.customCheckbox2 {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  height: 1rem;
+  width: 1rem;
+  border: 2px solid var(--primary-color);
+  border-radius: 50%;
+  transition: all 150ms;
+  cursor: pointer;
+}
+
+.customCheckbox:checked,
+.customCheckbox2:checked {
+  background-color: var(--primary-color);
+  transform: scale(1.1);
+}
+
+.customCheckbox2:hover:not(:checked) {
+  height: 0.85rem;
+  width: 0.85rem;
+  margin-left: 0.075rem;
+  margin-right: 0.075rem;
+}

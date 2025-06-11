@@ -1,0 +1,413 @@
+[
+  {
+    "title": "Overflowing garbage near school creates health hazard",
+    "desc": "The area outside the government school in Arambagh has turned into a garbage dumping ground, causing a terrible stench and attracting flies and stray dogs. Children have to walk past the filth every day, and many parents have reported cases of vomiting and fever. Despite repeated complaints, no action has been taken. The pile continues to grow, blocking the footpath and spilling into the road. Locals have even started putting up warning signs to keep people away from the mess. The situation is getting worse with the onset of the rains, as the garbage turns into a breeding ground for mosquitoes. The waterlogged trash is also leaking into nearby homes, adding to the misery of residents. This issue must be addressed urgently before it turns into a full-blown health crisis. Authorities must take responsibility and provide immediate sanitation services. Fumigation and regular cleaning are crucial in the coming weeks. Parents demand a clean and safe path for school-going children and stricter monitoring to prevent such negligence in the future.",
+    "category": "overflowing_dustbin",
+    "status": "pending",
+    "address": "Near Government Primary School, Main Road",
+    "state": "west bengal",
+    "city": "arambagh",
+    "pincode": 721601,
+    "latitude": 22.885,
+    "longitude": 87.7803,
+    "images": [
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748083259/trashtrack/seqvo5j7usikh0pwf2tm.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748884131/trashtrack/n6vzc5eptci3snrukqa8.jpg"
+    ],
+    "submittedBy": "hirensarvaiya1233@gmail.com",
+    "isAnonymous": false,
+    "submittedAt": { "$date": "2024-03-12T10:30:00.000Z" }
+  },
+  {
+    "title": "Open dumping near riverbank threatens aquatic life",
+    "desc": "For the past two months, residents near the Tamluk riverbank have observed an increasing volume of waste being dumped directly into the water. Plastic bags, broken furniture, chemical containers, and even medical waste are being discarded without any oversight. The nearby fish population has significantly declined, and foul smells rise from the water daily. Local fishermen are losing their livelihoods as the water quality deteriorates. Despite several environmental warnings, the dumping continues. The river is turning into a toxic swamp, harming not just marine life but also people living downstream who depend on it for irrigation and daily chores. It's evident that organized dumping is happening, possibly from nearby factories and commercial units. Local activists have raised awareness, but municipal response remains absent. Without intervention, irreversible damage will occur. Residents demand strict surveillance and installation of waste filtration measures immediately to preserve the ecological balance of the river.",
+    "category": "near_water_body",
+    "status": "resolved",
+    "address": "East riverbank zone near old dockyard Tamluk",
+    "state": "west bengal",
+    "city": "tamluk",
+    "pincode": 721636,
+    "latitude": 22.3001,
+    "longitude": 87.9201,
+    "images": [
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748158291/trashtrack/ptpcostpsvlwk7eaqedt.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748066839/trashtrack/gtviismnexgbehbzbjse.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748884129/trashtrack/pvq7dzjsgtn2f9vnv6wm.jpg"
+    ],
+    "resolvedImages": [
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748158292/trashtrack/a043oadude9prhpbtt55.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748165242/trashtrack/et011m6dvngbppkqkvqa.jpg"
+    ],
+    "submittedBy": "hirensarvaiya1233@gmail.com",
+    "resolvedBy": "hirensarvaiya67@gmail.com",
+    "officerResponse": "The illegal dumping issue at the Tamluk riverbank has been addressed. Our sanitation teams have cleared all visible waste and installed temporary fencing to prevent future dumping. We are also working with local authorities to identify the responsible parties and take legal action. Regular monitoring has begun, and a waste collection center is being planned nearby.",
+    "isAnonymous": false,
+    "submittedAt": { "$date": "2023-09-20T08:00:00.000Z" },
+    "resolvedAt": { "$date": "2023-10-13T11:20:00.000Z" }
+  },
+  {
+    "title": "Dead animal left to rot near market area",
+    "desc": "A dead dog has been lying near the entrance of the market area in Tirupathur for over a week. The carcass has started decomposing, releasing a foul odor that spreads across the nearby shops and food stalls. Vendors and customers are visibly disturbed, and the footfall in the market has decreased. No municipality worker has responded to multiple complaints made via helplines. This negligence is a health hazard, especially for people selling perishable food items nearby. Flies, stray dogs, and even vultures have been spotted around the carcass. If this continues, there will be a risk of spreading disease. Authorities need to act fast to clean the area and sanitize it.",
+    "category": "dead_animal",
+    "status": "pending",
+    "address": "Near central vegetable market main gate",
+    "state": "tamil nadu",
+    "city": "tirupathur",
+    "pincode": 635601,
+    "latitude": 12.4967,
+    "longitude": 78.5691,
+    "images": [
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748884131/trashtrack/n6vzc5eptci3snrukqa8.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748158291/trashtrack/ptpcostpsvlwk7eaqedt.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748066839/trashtrack/gtviismnexgbehbzbjse.jpg"
+    ],
+    "submittedBy": "hirensarvaiya1233@gmail.com",
+    "isAnonymous": false,
+    "submittedAt": { "$date": "2024-04-02T14:45:00.000Z" }
+  },
+  {
+    "title": "Overflowing bins attracting stray cattle and dogs",
+    "desc": "In the residential area of Naidupet, bins have not been emptied in over two weeks. Waste is piling up outside homes and is scattered on the streets due to stray cattle rummaging through it. The situation is worsening each day with more garbage accumulating. The stench is unbearable, especially during evenings. Residents are forced to keep their windows shut. School children have to walk past rotting garbage every day, making them prone to infections. People are angry and demand urgent cleanup and better waste management.",
+    "category": "unpicked_garbage",
+    "status": "resolved",
+    "address": "Sector B-3, near municipal tank, Naidupet colony",
+    "state": "andhra pradesh",
+    "city": "naidupet",
+    "pincode": 524126,
+    "latitude": 13.9142,
+    "longitude": 79.8996,
+    "images": [
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748884129/trashtrack/pvq7dzjsgtn2f9vnv6wm.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748083259/trashtrack/seqvo5j7usikh0pwf2tm.jpg"
+    ],
+    "resolvedImages": [
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748165242/trashtrack/et011m6dvngbppkqkvqa.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748158292/trashtrack/a043oadude9prhpbtt55.jpg"
+    ],
+    "submittedBy": "hirensarvaiya1233@gmail.com",
+    "resolvedBy": "hirensarvaiya67@gmail.com",
+    "officerResponse": "Garbage collection in the Naidupet area has been resumed with immediate effect. Additional bins have been installed and a new collection schedule has been shared with residents. The affected streets were sanitized, and action will be taken against those dumping waste outside designated bins.",
+    "isAnonymous": false,
+    "submittedAt": { "$date": "2023-05-07T09:00:00.000Z" },
+    "resolvedAt": { "$date": "2023-05-25T17:00:00.000Z" }
+  },
+  {
+    "title": "Illegal dumping of construction waste behind mall",
+    "desc": "Heavy construction debris including concrete chunks, metal rods, and broken tiles have been dumped behind a commercial mall in Sircilla. This has led to partial blockage of a drainage line. During rains, water floods the surrounding area causing great inconvenience. This illegal dumping is suspected to be by nearby builders who avoid proper waste management. If left unchecked, it will clog the entire stormwater system.",
+    "category": "illegal_dumping",
+    "status": "pending",
+    "address": "Behind Rainbow Mall exit gate",
+    "state": "telangana",
+    "city": "sircilla",
+    "pincode": 505301,
+    "latitude": 18.3833,
+    "longitude": 78.8000,
+    "images": [
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748165242/trashtrack/et011m6dvngbppkqkvqa.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748158292/trashtrack/a043oadude9prhpbtt55.jpg"
+    ],
+    "submittedBy": "hirensarvaiya1233@gmail.com",
+    "isAnonymous": false,
+    "submittedAt": { "$date": "2024-02-18T07:50:00.000Z" }
+  },
+  {
+    "title": "Industrial waste dumped beside highway stretch",
+    "desc": "A large portion of land near the highway in Visnagar is covered with toxic black residue suspected to be industrial waste. Locals complain of foul chemical odors and say nearby plants are dying. It's suspected that nearby factories are dumping untreated waste to avoid disposal costs. Such practices violate environmental laws and endanger both air and groundwater. Locals demand testing and penalties for responsible units.",
+    "category": "industrial_waste",
+    "status": "resolved",
+    "address": "Highway bypass near old toll booth",
+    "state": "gujarat",
+    "city": "visnagar",
+    "pincode": 384315,
+    "latitude": 23.7001,
+    "longitude": 72.5503,
+    "images": [
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748158292/trashtrack/a043oadude9prhpbtt55.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748884131/trashtrack/n6vzc5eptci3snrukqa8.jpg"
+    ],
+    "resolvedImages": [
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748083259/trashtrack/seqvo5j7usikh0pwf2tm.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748884129/trashtrack/pvq7dzjsgtn2f9vnv6wm.jpg"
+    ],
+    "submittedBy": "hirensarvaiya1233@gmail.com",
+    "resolvedBy": "hirensarvaiya67@gmail.com",
+    "officerResponse": "After investigating the reported site in Visnagar, our teams removed all hazardous materials and transported them to an authorized treatment center. Environmental officers have started legal procedures against violators. Regular patrolling will be done to prevent recurrence.",
+    "isAnonymous": false,
+    "submittedAt": { "$date": "2023-12-04T11:10:00.000Z" },
+    "resolvedAt": { "$date": "2023-12-28T16:30:00.000Z" }
+  },
+  {
+    "title": "Overflowing garbage near school creates health hazard",
+    "desc": "The area outside the government school in Arambagh has turned into a garbage dumping ground, causing a terrible stench and attracting flies and stray dogs. Children have to walk past the filth every day, and many parents have reported cases of vomiting and fever. Despite repeated complaints, no action has been taken. The pile continues to grow, blocking the footpath and spilling into the road. Locals have even started putting up warning signs to keep people away from the mess. The situation is getting worse with the onset of the rains, as the garbage turns into a breeding ground for mosquitoes. The waterlogged trash is also leaking into nearby homes, adding to the misery of residents. This issue must be addressed urgently before it turns into a full-blown health crisis. Authorities must take responsibility and provide immediate sanitation services. Fumigation and regular cleaning are crucial in the coming weeks. Parents demand a clean and safe path for school-going children and stricter monitoring to prevent such negligence in the future.",
+    "category": "overflowing_dustbin",
+    "status": "pending",
+    "address": "Near Government Primary School, Main Road",
+    "state": "west bengal",
+    "city": "arambagh",
+    "pincode": 721601,
+    "latitude": 22.885,
+    "longitude": 87.7803,
+    "images": [
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748083259/trashtrack/seqvo5j7usikh0pwf2tm.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748884131/trashtrack/n6vzc5eptci3snrukqa8.jpg"
+    ],
+    "submittedBy": "hirensarvaiya1233@gmail.com",
+    "isAnonymous": false,
+    "submittedAt": { "$date": "2024-03-12T10:30:00.000Z" }
+  },
+  {
+    "title": "Open dumping near riverbank threatens aquatic life",
+    "desc": "For the past two months, residents near the Tamluk riverbank have observed an increasing volume of waste being dumped directly into the water. Plastic bags, broken furniture, chemical containers, and even medical waste are being discarded without any oversight. The nearby fish population has significantly declined, and foul smells rise from the water daily. Local fishermen are losing their livelihoods as the water quality deteriorates. Despite several environmental warnings, the dumping continues. The river is turning into a toxic swamp, harming not just marine life but also people living downstream who depend on it for irrigation and daily chores. It's evident that organized dumping is happening, possibly from nearby factories and commercial units. Local activists have raised awareness, but municipal response remains absent. Without intervention, irreversible damage will occur. Residents demand strict surveillance and installation of waste filtration measures immediately to preserve the ecological balance of the river.",
+    "category": "near_water_body",
+    "status": "resolved",
+    "address": "East riverbank zone near old dockyard Tamluk",
+    "state": "west bengal",
+    "city": "tamluk",
+    "pincode": 721636,
+    "latitude": 22.3001,
+    "longitude": 87.9201,
+    "images": [
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748158291/trashtrack/ptpcostpsvlwk7eaqedt.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748066839/trashtrack/gtviismnexgbehbzbjse.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748884129/trashtrack/pvq7dzjsgtn2f9vnv6wm.jpg"
+    ],
+    "resolvedImages": [
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748158292/trashtrack/a043oadude9prhpbtt55.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748165242/trashtrack/et011m6dvngbppkqkvqa.jpg"
+    ],
+    "submittedBy": "hirensarvaiya1233@gmail.com",
+    "resolvedBy": "hirensarvaiya67@gmail.com",
+    "officerResponse": "The illegal dumping issue at the Tamluk riverbank has been addressed. Our sanitation teams have cleared all visible waste and installed temporary fencing to prevent future dumping. We are also working with local authorities to identify the responsible parties and take legal action. Regular monitoring has begun, and a waste collection center is being planned nearby.",
+    "isAnonymous": false,
+    "submittedAt": { "$date": "2023-09-20T08:00:00.000Z" },
+    "resolvedAt": { "$date": "2023-10-13T11:20:00.000Z" }
+  },
+  {
+    "title": "Dead animal left to rot near market area",
+    "desc": "A dead dog has been lying near the entrance of the market area in Tirupathur for over a week. The carcass has started decomposing, releasing a foul odor that spreads across the nearby shops and food stalls. Vendors and customers are visibly disturbed, and the footfall in the market has decreased. No municipality worker has responded to multiple complaints made via helplines. This negligence is a health hazard, especially for people selling perishable food items nearby. Flies, stray dogs, and even vultures have been spotted around the carcass. If this continues, there will be a risk of spreading disease. Authorities need to act fast to clean the area and sanitize it.",
+    "category": "dead_animal",
+    "status": "pending",
+    "address": "Near central vegetable market main gate",
+    "state": "tamil nadu",
+    "city": "tirupathur",
+    "pincode": 635601,
+    "latitude": 12.4967,
+    "longitude": 78.5691,
+    "images": [
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748884131/trashtrack/n6vzc5eptci3snrukqa8.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748158291/trashtrack/ptpcostpsvlwk7eaqedt.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748066839/trashtrack/gtviismnexgbehbzbjse.jpg"
+    ],
+    "submittedBy": "hirensarvaiya1233@gmail.com",
+    "isAnonymous": false,
+    "submittedAt": { "$date": "2024-04-02T14:45:00.000Z" }
+  },
+  {
+    "title": "Overflowing bins attracting stray cattle and dogs",
+    "desc": "In the residential area of Naidupet, bins have not been emptied in over two weeks. Waste is piling up outside homes and is scattered on the streets due to stray cattle rummaging through it. The situation is worsening each day with more garbage accumulating. The stench is unbearable, especially during evenings. Residents are forced to keep their windows shut. School children have to walk past rotting garbage every day, making them prone to infections. People are angry and demand urgent cleanup and better waste management.",
+    "category": "unpicked_garbage",
+    "status": "resolved",
+    "address": "Sector B-3, near municipal tank, Naidupet colony",
+    "state": "andhra pradesh",
+    "city": "naidupet",
+    "pincode": 524126,
+    "latitude": 13.9142,
+    "longitude": 79.8996,
+    "images": [
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748884129/trashtrack/pvq7dzjsgtn2f9vnv6wm.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748083259/trashtrack/seqvo5j7usikh0pwf2tm.jpg"
+    ],
+    "resolvedImages": [
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748165242/trashtrack/et011m6dvngbppkqkvqa.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748158292/trashtrack/a043oadude9prhpbtt55.jpg"
+    ],
+    "submittedBy": "hirensarvaiya1233@gmail.com",
+    "resolvedBy": "hirensarvaiya67@gmail.com",
+    "officerResponse": "Garbage collection in the Naidupet area has been resumed with immediate effect. Additional bins have been installed and a new collection schedule has been shared with residents. The affected streets were sanitized, and action will be taken against those dumping waste outside designated bins.",
+    "isAnonymous": false,
+    "submittedAt": { "$date": "2023-05-07T09:00:00.000Z" },
+    "resolvedAt": { "$date": "2023-05-25T17:00:00.000Z" }
+  },
+  {
+    "title": "Illegal dumping of construction waste behind mall",
+    "desc": "Heavy construction debris including concrete chunks, metal rods, and broken tiles have been dumped behind a commercial mall in Sircilla. This has led to partial blockage of a drainage line. During rains, water floods the surrounding area causing great inconvenience. This illegal dumping is suspected to be by nearby builders who avoid proper waste management. If left unchecked, it will clog the entire stormwater system.",
+    "category": "illegal_dumping",
+    "status": "pending",
+    "address": "Behind Rainbow Mall exit gate",
+    "state": "telangana",
+    "city": "sircilla",
+    "pincode": 505301,
+    "latitude": 18.3833,
+    "longitude": 78.8000,
+    "images": [
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748165242/trashtrack/et011m6dvngbppkqkvqa.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748158292/trashtrack/a043oadude9prhpbtt55.jpg"
+    ],
+    "submittedBy": "hirensarvaiya1233@gmail.com",
+    "isAnonymous": false,
+    "submittedAt": { "$date": "2024-02-18T07:50:00.000Z" }
+  },
+  {
+    "title": "Industrial waste dumped beside highway stretch",
+    "desc": "A large portion of land near the highway in Visnagar is covered with toxic black residue suspected to be industrial waste. Locals complain of foul chemical odors and say nearby plants are dying. It's suspected that nearby factories are dumping untreated waste to avoid disposal costs. Such practices violate environmental laws and endanger both air and groundwater. Locals demand testing and penalties for responsible units.",
+    "category": "industrial_waste",
+    "status": "resolved",
+    "address": "Highway bypass near old toll booth",
+    "state": "gujarat",
+    "city": "visnagar",
+    "pincode": 384315,
+    "latitude": 23.7001,
+    "longitude": 72.5503,
+    "images": [
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748158292/trashtrack/a043oadude9prhpbtt55.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748884131/trashtrack/n6vzc5eptci3snrukqa8.jpg"
+    ],
+    "resolvedImages": [
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748083259/trashtrack/seqvo5j7usikh0pwf2tm.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748884129/trashtrack/pvq7dzjsgtn2f9vnv6wm.jpg"
+    ],
+    "submittedBy": "hirensarvaiya1233@gmail.com",
+    "resolvedBy": "hirensarvaiya67@gmail.com",
+    "officerResponse": "After investigating the reported site in Visnagar, our teams removed all hazardous materials and transported them to an authorized treatment center. Environmental officers have started legal procedures against violators. Regular patrolling will be done to prevent recurrence.",
+    "isAnonymous": false,
+    "submittedAt": { "$date": "2023-12-04T11:10:00.000Z" },
+    "resolvedAt": { "$date": "2023-12-28T16:30:00.000Z" }
+  },
+  {
+    "title": "Overflowing garbage near school creates health hazard",
+    "desc": "The area outside the government school in Arambagh has turned into a garbage dumping ground, causing a terrible stench and attracting flies and stray dogs. Children have to walk past the filth every day, and many parents have reported cases of vomiting and fever. Despite repeated complaints, no action has been taken. The pile continues to grow, blocking the footpath and spilling into the road. Locals have even started putting up warning signs to keep people away from the mess. The situation is getting worse with the onset of the rains, as the garbage turns into a breeding ground for mosquitoes. The waterlogged trash is also leaking into nearby homes, adding to the misery of residents. This issue must be addressed urgently before it turns into a full-blown health crisis. Authorities must take responsibility and provide immediate sanitation services. Fumigation and regular cleaning are crucial in the coming weeks. Parents demand a clean and safe path for school-going children and stricter monitoring to prevent such negligence in the future.",
+    "category": "overflowing_dustbin",
+    "status": "pending",
+    "address": "Near Government Primary School, Main Road",
+    "state": "west bengal",
+    "city": "arambagh",
+    "pincode": 721601,
+    "latitude": 22.885,
+    "longitude": 87.7803,
+    "images": [
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748083259/trashtrack/seqvo5j7usikh0pwf2tm.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748884131/trashtrack/n6vzc5eptci3snrukqa8.jpg"
+    ],
+    "submittedBy": "hirensarvaiya1233@gmail.com",
+    "isAnonymous": false,
+    "submittedAt": { "$date": "2024-03-12T10:30:00.000Z" }
+  },
+  {
+    "title": "Open dumping near riverbank threatens aquatic life",
+    "desc": "For the past two months, residents near the Tamluk riverbank have observed an increasing volume of waste being dumped directly into the water. Plastic bags, broken furniture, chemical containers, and even medical waste are being discarded without any oversight. The nearby fish population has significantly declined, and foul smells rise from the water daily. Local fishermen are losing their livelihoods as the water quality deteriorates. Despite several environmental warnings, the dumping continues. The river is turning into a toxic swamp, harming not just marine life but also people living downstream who depend on it for irrigation and daily chores. It's evident that organized dumping is happening, possibly from nearby factories and commercial units. Local activists have raised awareness, but municipal response remains absent. Without intervention, irreversible damage will occur. Residents demand strict surveillance and installation of waste filtration measures immediately to preserve the ecological balance of the river.",
+    "category": "near_water_body",
+    "status": "resolved",
+    "address": "East riverbank zone near old dockyard Tamluk",
+    "state": "west bengal",
+    "city": "tamluk",
+    "pincode": 721636,
+    "latitude": 22.3001,
+    "longitude": 87.9201,
+    "images": [
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748158291/trashtrack/ptpcostpsvlwk7eaqedt.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748066839/trashtrack/gtviismnexgbehbzbjse.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748884129/trashtrack/pvq7dzjsgtn2f9vnv6wm.jpg"
+    ],
+    "resolvedImages": [
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748158292/trashtrack/a043oadude9prhpbtt55.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748165242/trashtrack/et011m6dvngbppkqkvqa.jpg"
+    ],
+    "submittedBy": "hirensarvaiya1233@gmail.com",
+    "resolvedBy": "hirensarvaiya67@gmail.com",
+    "officerResponse": "The illegal dumping issue at the Tamluk riverbank has been addressed. Our sanitation teams have cleared all visible waste and installed temporary fencing to prevent future dumping. We are also working with local authorities to identify the responsible parties and take legal action. Regular monitoring has begun, and a waste collection center is being planned nearby.",
+    "isAnonymous": false,
+    "submittedAt": { "$date": "2023-09-20T08:00:00.000Z" },
+    "resolvedAt": { "$date": "2023-10-13T11:20:00.000Z" }
+  },
+  {
+    "title": "Dead animal left to rot near market area",
+    "desc": "A dead dog has been lying near the entrance of the market area in Tirupathur for over a week. The carcass has started decomposing, releasing a foul odor that spreads across the nearby shops and food stalls. Vendors and customers are visibly disturbed, and the footfall in the market has decreased. No municipality worker has responded to multiple complaints made via helplines. This negligence is a health hazard, especially for people selling perishable food items nearby. Flies, stray dogs, and even vultures have been spotted around the carcass. If this continues, there will be a risk of spreading disease. Authorities need to act fast to clean the area and sanitize it.",
+    "category": "dead_animal",
+    "status": "pending",
+    "address": "Near central vegetable market main gate",
+    "state": "tamil nadu",
+    "city": "tirupathur",
+    "pincode": 635601,
+    "latitude": 12.4967,
+    "longitude": 78.5691,
+    "images": [
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748884131/trashtrack/n6vzc5eptci3snrukqa8.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748158291/trashtrack/ptpcostpsvlwk7eaqedt.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748066839/trashtrack/gtviismnexgbehbzbjse.jpg"
+    ],
+    "submittedBy": "hirensarvaiya1233@gmail.com",
+    "isAnonymous": false,
+    "submittedAt": { "$date": "2024-04-02T14:45:00.000Z" }
+  },
+  {
+    "title": "Overflowing bins attracting stray cattle and dogs",
+    "desc": "In the residential area of Naidupet, bins have not been emptied in over two weeks. Waste is piling up outside homes and is scattered on the streets due to stray cattle rummaging through it. The situation is worsening each day with more garbage accumulating. The stench is unbearable, especially during evenings. Residents are forced to keep their windows shut. School children have to walk past rotting garbage every day, making them prone to infections. People are angry and demand urgent cleanup and better waste management.",
+    "category": "unpicked_garbage",
+    "status": "resolved",
+    "address": "Sector B-3, near municipal tank, Naidupet colony",
+    "state": "andhra pradesh",
+    "city": "naidupet",
+    "pincode": 524126,
+    "latitude": 13.9142,
+    "longitude": 79.8996,
+    "images": [
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748884129/trashtrack/pvq7dzjsgtn2f9vnv6wm.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748083259/trashtrack/seqvo5j7usikh0pwf2tm.jpg"
+    ],
+    "resolvedImages": [
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748165242/trashtrack/et011m6dvngbppkqkvqa.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748158292/trashtrack/a043oadude9prhpbtt55.jpg"
+    ],
+    "submittedBy": "hirensarvaiya1233@gmail.com",
+    "resolvedBy": "hirensarvaiya67@gmail.com",
+    "officerResponse": "Garbage collection in the Naidupet area has been resumed with immediate effect. Additional bins have been installed and a new collection schedule has been shared with residents. The affected streets were sanitized, and action will be taken against those dumping waste outside designated bins.",
+    "isAnonymous": false,
+    "submittedAt": { "$date": "2023-05-07T09:00:00.000Z" },
+    "resolvedAt": { "$date": "2023-05-25T17:00:00.000Z" }
+  },
+  {
+    "title": "Illegal dumping of construction waste behind mall",
+    "desc": "Heavy construction debris including concrete chunks, metal rods, and broken tiles have been dumped behind a commercial mall in Sircilla. This has led to partial blockage of a drainage line. During rains, water floods the surrounding area causing great inconvenience. This illegal dumping is suspected to be by nearby builders who avoid proper waste management. If left unchecked, it will clog the entire stormwater system.",
+    "category": "illegal_dumping",
+    "status": "pending",
+    "address": "Behind Rainbow Mall exit gate",
+    "state": "telangana",
+    "city": "sircilla",
+    "pincode": 505301,
+    "latitude": 18.3833,
+    "longitude": 78.8000,
+    "images": [
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748165242/trashtrack/et011m6dvngbppkqkvqa.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748158292/trashtrack/a043oadude9prhpbtt55.jpg"
+    ],
+    "submittedBy": "hirensarvaiya1233@gmail.com",
+    "isAnonymous": false,
+    "submittedAt": { "$date": "2024-02-18T07:50:00.000Z" }
+  },
+  {
+    "title": "Industrial waste dumped beside highway stretch",
+    "desc": "A large portion of land near the highway in Visnagar is covered with toxic black residue suspected to be industrial waste. Locals complain of foul chemical odors and say nearby plants are dying. It's suspected that nearby factories are dumping untreated waste to avoid disposal costs. Such practices violate environmental laws and endanger both air and groundwater. Locals demand testing and penalties for responsible units.",
+    "category": "industrial_waste",
+    "status": "resolved",
+    "address": "Highway bypass near old toll booth",
+    "state": "gujarat",
+    "city": "visnagar",
+    "pincode": 384315,
+    "latitude": 23.7001,
+    "longitude": 72.5503,
+    "images": [
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748158292/trashtrack/a043oadude9prhpbtt55.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748884131/trashtrack/n6vzc5eptci3snrukqa8.jpg"
+    ],
+    "resolvedImages": [
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748083259/trashtrack/seqvo5j7usikh0pwf2tm.jpg",
+      "https://res.cloudinary.com/dbepo14db/image/upload/v1748884129/trashtrack/pvq7dzjsgtn2f9vnv6wm.jpg"
+    ],
+    "submittedBy": "hirensarvaiya1233@gmail.com",
+    "resolvedBy": "hirensarvaiya67@gmail.com",
+    "officerResponse": "After investigating the reported site in Visnagar, our teams removed all hazardous materials and transported them to an authorized treatment center. Environmental officers have started legal procedures against violators. Regular patrolling will be done to prevent recurrence.",
+    "isAnonymous": false,
+    "submittedAt": { "$date": "2023-12-04T11:10:00.000Z" },
+    "resolvedAt": { "$date": "2023-12-28T16:30:00.000Z" }
+  }
+]
