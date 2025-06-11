@@ -150,7 +150,7 @@ const OfficerDashboard = () => {
 
   return (
     <main className="p-4">
-      <h1 className="text-3xl font-[1000] font-[Public_sans] mb-4">MY REPORTS</h1>
+      <h1 className="text-3xl font-[1000] font-[Public_sans] mb-4">DASHBOARD</h1>
       <section>
         <div className="flex justify-between items-center mb-4 font-[Public_sans]">
           <input type="text" className="border-2 border-[var(--primary-color)]/25 focus:border-[var(--primary-color)] transition-all rounded-xl p-2 w-2/5 max-[300px]:w-1/3 max-[775px]:text-sm max-[500px]:text-[12px] max-[300px]:text-[10px]" placeholder="Search reports by title..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
