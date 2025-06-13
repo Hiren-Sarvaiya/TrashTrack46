@@ -90,3 +90,37 @@ input[type="number"]::-webkit-outer-spin-button {
 body.react-confirm-alert-body-element {
   overflow: auto !important;
 }
+
+.loaderCards {
+  position: relative;
+  overflow: hidden;
+  height: 192px;
+  width: 25%;
+  border-radius: .75rem;
+  background-color: #000000b8;
+}
+
+.loaderCards::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  height: 100%;
+  width: 200%;
+  background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+
+  50% {
+    left: 0%;
+  }
+
+  100% {
+    left: -100%;
+  }
+}

@@ -26,30 +26,49 @@ const OfficerDashboard = () => {
   const router = useRouter()
   const [isResolveLoading, setIsResolveLoading] = useState(false)
   const [loadingStatus, setLoadingStatus] = useState({ reports: false, cities: false })
+  const [hasMore, setHasMore] = useState(true)
+  const [skip, setSkip] = useState(0)
+  const [loadingMore, setLoadingMore] = useState(false)
 
-  useEffect(() => {
-    const fetchReports = async () => {
-      try {
-        if (!user?.email && isAuthCycleOn) return
-        await fetch("/api/reports")
-          .then(res => res.json())
-          .then(data => {
-            if (data.success) {
-              if (data.reports.length !== 0) setReports(data.reports)
-              else setIsPageLoaded(true)
-            } else {
-              toast.error(data.message)
-            }
-          })
-      } catch (err) {
-        console.error("Error fetching reports : ", err)
-        toast.error("Something went wrong!")
-      } finally {
-        setLoadingStatus(prev => ({ ...prev, reports: true }))
+  const fetchReports = async () => {
+    try {
+      if (!user?.email && isAuthCycleOn) return
+
+      setLoadingMore(true)
+      const res = await fetch(`/api/reports?purpose=dashboard&skip=${skip}&limit=20`)
+      const data = await res.json()
+
+      if (data.success) {
+        setReports(prev => [...prev, ...data.reports.filter(r => !prev.some(p => p._id === r._id))])
+        setSkip(prev => prev + 20)
+        if (reports.length + data.reports.length >= data.total) setHasMore(false)
+      } else {
+        toast.error(data.message)
       }
+    } catch (err) {
+      console.error("Error fetching reports:", err)
+      toast.error("Something went wrong!")
+    } finally {
+      setLoadingMore(false)
+      setLoadingStatus(prev => ({ ...prev, reports: true }))
     }
+  }
+  useEffect(() => {
     fetchReports()
   }, [user])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollHeight = document.documentElement.scrollHeight
+      const scrollTop = document.documentElement.scrollTop
+      const clientHeight = document.documentElement.clientHeight
+
+      if (Math.ceil(scrollTop + clientHeight) >= scrollHeight && hasMore && !loadingMore) fetchReports()
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [hasMore, loadingMore])
 
   const filteredReports = useMemo(() => {
     if (reports.length === 0) return []
@@ -249,23 +268,33 @@ const OfficerDashboard = () => {
         </div>
         <div className="reportsContainer grid grid-cols-4 gap-4">
           {filteredReports.length !== 0 ?
-            filteredReports.map((report) => (
-              <div key={report._id} className={`card relative group font-[Roboto] flex flex-col gap-4 transition-all ease-in-out ${report.status === "resolved" ? "bg-green-500/25 hover:bg-green-500/35" : "bg-red-500/25 hover:bg-red-500/35"} rounded-xl p-4 pb-14 hover:shadow-[4px_4px_4px_1px_#00000080] hover:-translate-1`}>
-                <div className="cardHeader flex justify-between">
-                  <div className="title text-xl font-semibold line-clamp-2 overflow-hidden text-ellipsis">{report.title}</div>
-                  <div className="status font-mono h-fit bg-[var(--primary-color)]/25 group-hover:bg-[var(--primary-color)]/50 transition-colors px-2 py-1 rounded-md">{report.status[0].toUpperCase() + report.status.slice(1)}</div>
+            <>
+              {filteredReports.map((report) => (
+                <div key={report._id} className={`card relative group font-[Roboto] flex flex-col gap-4 transition-all ease-in-out ${report.status === "resolved" ? "bg-green-500/25 hover:bg-green-500/35" : "bg-red-500/25 hover:bg-red-500/35"} rounded-xl p-4 pb-14 hover:shadow-[4px_4px_4px_1px_#00000080] hover:-translate-1`}>
+                  <div className="cardHeader flex justify-between">
+                    <div className="title text-xl font-semibold line-clamp-2 overflow-hidden text-ellipsis">{report.title}</div>
+                    <div className="status font-mono h-fit bg-[var(--primary-color)]/25 group-hover:bg-[var(--primary-color)]/50 transition-colors px-2 py-1 rounded-md">{report.status[0].toUpperCase() + report.status.slice(1)}</div>
+                  </div>
+                  <div className="desc line-clamp-3 overflow-hidden text-ellipsis">{report.desc}</div>
+                  <div className="category font-mono bg-[var(--primary-color)]/25 group-hover:bg-[var(--primary-color)]/50 transition-colors px-2 py-1 rounded-md w-fit">{reportCategories.find(element => element.value === report.category)?.label}</div>
+                  <div className="cardFooter absolute bottom-2 left-0 w-full px-4 flex justify-between items-center">
+                    <div className="submittedAt">{new Date(report.submittedAt).toLocaleDateString("en-GB")}</div>
+                    <button onClick={() => { if (!waitForPopUps) { setWaitForPopUps(true); setExpandedId(report._id) } }} className="primaryBtn actionBtn">Expand</button>
+                  </div>
                 </div>
-                <div className="desc line-clamp-3 overflow-hidden text-ellipsis">{report.desc}</div>
-                <div className="category font-mono bg-[var(--primary-color)]/25 group-hover:bg-[var(--primary-color)]/50 transition-colors px-2 py-1 rounded-md w-fit">{reportCategories.find(element => element.value === report.category)?.label}</div>
-                <div className="cardFooter absolute bottom-2 left-0 w-full px-4 flex justify-between items-center">
-                  <div className="submittedAt">{new Date(report.submittedAt).toLocaleDateString("en-GB")}</div>
-                  <button onClick={() => { if (!waitForPopUps) { setWaitForPopUps(true); setExpandedId(report._id) } }} className="primaryBtn actionBtn">Expand</button>
-                </div>
-              </div>
-            )) :
+              ))}
+            </> :
             <p>No reports found</p>
           }
         </div>
+        {loadingMore && (
+          <div className="loaderCardsContainer flex gap-4 mt-4">
+            <div style={{ height: document.querySelector(".reportsContainer")?.lastElementChild?.offsetHeight + "px" }} className="loaderCards"></div>
+            <div style={{ height: document.querySelector(".reportsContainer")?.lastElementChild?.offsetHeight + "px" }} className="loaderCards"></div>
+            <div style={{ height: document.querySelector(".reportsContainer")?.lastElementChild?.offsetHeight + "px" }} className="loaderCards"></div>
+            <div style={{ height: document.querySelector(".reportsContainer")?.lastElementChild?.offsetHeight + "px" }} className="loaderCards"></div>
+          </div>
+        )}
       </section>
     </main>
   )
