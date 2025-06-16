@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation"
 import { useAppContext } from "@/context/AppContext"
 import LeafletMap from "@/components/MapPicker"
 import styles from "./report.module.css"
-import Loader from "@/components/loaders/Loader"
+import BtnLoader from "@/components/loaders/btnLoader/BtnLoader"
 import ClientOnly from "@/components/ClientOnly"
 
 const Report = () => {
@@ -310,7 +310,7 @@ const Report = () => {
 
           <div className="loadingBtnsWrappers relative w-fit group">
             <input disabled={isSubmittingData} className="primaryBtn" type="submit" value="SUBMIT" />
-            {isSubmittingData && <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-all group-hover:scale-105 group-active:scale-100"><Loader /></div>}
+            {isSubmittingData && <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-all group-hover:scale-105 group-active:scale-100"><BtnLoader /></div>}
           </div>
         </form>
       </div>

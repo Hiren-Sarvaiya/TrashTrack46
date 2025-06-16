@@ -1,6 +1,6 @@
 "use client"
 import { useAppContext } from "@/context/AppContext"
-import Loader from "@/components/loaders/Loader"
+import PageLoader from "./loaders/pageLoader/PageLoader"
 
 export default function ClientWrapper({ children }) {
   const { isPageLoaded } = useAppContext()
@@ -9,7 +9,7 @@ export default function ClientWrapper({ children }) {
     <>
       <div className={`fixed top-0 left-0 w-dvw h-dvh flex justify-center items-center transition-all ${isPageLoaded ? "-z-20 bg-transparent" : "z-[999] bg-white"}`}>
         <div className={`pageLoaderContainer ${isPageLoaded ? "scale-0" : "scale-200"} transition-all`}>
-          <Loader />
+          <PageLoader />
         </div>
       </div>
       {children}

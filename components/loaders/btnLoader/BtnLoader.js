@@ -1,6 +1,6 @@
-import styles from "./loader.module.css"
+import styles from "./btnLoader.module.css"
 
-const Loader = () => {
+const BtnLoader = () => {
   return (
     <div className={styles.loader}>
       <svg viewBox="0 0 80 80">
@@ -10,4 +10,4 @@ const Loader = () => {
   )
 }
 
-export default Loader
+export default BtnLoader

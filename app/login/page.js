@@ -7,7 +7,7 @@ import Link from "next/link"
 import { toast } from "react-toastify"
 import { useRouter } from "next/navigation"
 import { useAppContext } from "@/context/AppContext"
-import Loader from "@/components/loaders/Loader"
+import BtnLoader from "@/components/loaders/btnLoader/BtnLoader"
 import { useEffect } from "react"
 import ClientOnly from "@/components/ClientOnly"
 
@@ -116,7 +116,7 @@ const Login = () => {
 
             <div className="loadingBtnsWrappers relative w-fit group">
               <input disabled={loginMethod === null || isSubmittingData} className={`primaryBtn ${loginMethod === null && "disabled:bg-[var(--primary-color)]! disabled:hover:bg-black/25! disabled:text-white!"}`} type="submit" value="SUBMIT" />
-              {isSubmittingData && <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-all group-hover:scale-105 group-active:scale-100"><Loader /></div>}
+              {isSubmittingData && <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-all group-hover:scale-105 group-active:scale-100"><BtnLoader /></div>}
             </div>
             <p className="text-center">Don't have an account? <Link className="link" href="/register">Register</Link></p>
           </form>

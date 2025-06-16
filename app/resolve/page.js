@@ -5,7 +5,7 @@ import { toast } from "react-toastify"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { useAppContext } from "@/context/AppContext"
-import Loader from "@/components/loaders/Loader"
+import BtnLoader from "@/components/loaders/btnLoader/BtnLoader"
 
 const Resolve = () => {
   const { register, handleSubmit, setValue, formState: { errors } } = useForm()
@@ -167,7 +167,7 @@ const Resolve = () => {
 
           <div className="loadingBtnsWrappers relative w-fit group">
             <input disabled={isSubmittingData} className="primaryBtn" type="submit" value="SUBMIT" />
-            {isSubmittingData && <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-all group-hover:scale-105 group-active:scale-100"><Loader /></div>}
+            {isSubmittingData && <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-all group-hover:scale-105 group-active:scale-100"><BtnLoader /></div>}
           </div>
         </form>
       </div>

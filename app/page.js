@@ -1,10 +1,16 @@
 "use client"
 import Image from "next/image"
 import { useAppContext } from "@/context/AppContext"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import { statsCollector } from "@/lib/insightsDataCollector"
 
 const Home = () => {
   const { setIsPageLoaded } = useAppContext()
+  const [stats, setStats] = useState(null)
+  useEffect(() => {
+    statsCollector().then(data => { if (data) setStats(data); console.log(data) })
+  }, [])
+
   useEffect(() => {
     const handleLoad = () => requestAnimationFrame(() => setIsPageLoaded(true))
 
@@ -30,32 +36,32 @@ const Home = () => {
       </section>
       <section className="bg-black text-white mb-10 selection:!bg-white/75 selection:!text-[var(--primary-color)]">
         <div className="max-w-[1600px] mx-auto flex justify-center-safe items-center">
-          <div className="tiles -translate-y-20 w-2/5">
-            <div className="firstRow flex gap-15 mb-15">
-              <div className="tile1 h-48 w-48 scale-125 bg-[var(--primary-color)] shadow-[0_0_8px_1px_rgba(0,0,0,0.5)] flex justify-center items-center rounded-s-full rounded-se-full border border-white hover:scale-[1.27] transition-all">
+          <div className="tiles -translate-y-12 w-2/5 scale-110">
+            <div className="firstRow flex gap-[6px] mb-[6px]">
+              <div className="tile1 h-48 w-48 bg-[var(--primary-color)] shadow-[0_0_8px_1px_rgba(0,0,0,0.5)] flex justify-center items-center rounded-s-full rounded-se-full border border-white hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all">
                 <div className="flex items-center flex-col">
-                  <h2 className="text-4xl font-[1000] font-[Public_sans]">1000+</h2>
-                  <div className="text-lg font-[Roboto]">Active Users</div>
+                  <h2 className="text-4xl font-[1000] font-[Public_sans]">{stats?.totalUsersCount}</h2>
+                  <div className="text-lg font-[Roboto]">Registered Users</div>
                 </div>
               </div>
-              <div className="tile2 h-48 w-48 scale-125 bg-[var(--primary-color)] shadow-[0_0_8px_1px_rgba(0,0,0,0.5)] flex justify-center items-center rounded-e-full rounded-ss-full border border-white hover:scale-[1.27] transition-all">
+              <div className="tile2 h-48 w-48 bg-[var(--primary-color)] shadow-[0_0_8px_1px_rgba(0,0,0,0.5)] flex justify-center items-center rounded-e-full rounded-ss-full border border-white hover:translate-x-0.5 hover:-translate-y-0.5 transition-all">
                 <div className="flex items-center flex-col">
-                  <h2 className="text-4xl font-[1000] font-[Public_sans]">1000+</h2>
-                  <div className="text-lg font-[Roboto]">Active Users</div>
+                  <h2 className="text-4xl font-[1000] font-[Public_sans]">{stats?.avgResolutionTime}</h2>
+                  <div className="text-lg font-[Roboto]">Avg. Resolution Time</div>
                 </div>
               </div>
             </div>
-            <div className="secondRow flex gap-15">
-              <div className="tile3 h-48 w-48 scale-125 bg-[var(--primary-color)] shadow-[0_0_8px_1px_rgba(0,0,0,0.5)] flex justify-center items-center rounded-s-full rounded-ee-full border border-white hover:scale-[1.27] transition-all">
+            <div className="secondRow flex gap-[6px]">
+              <div className="tile3 h-48 w-48 bg-[var(--primary-color)] shadow-[0_0_8px_1px_rgba(0,0,0,0.5)] flex justify-center items-center rounded-s-full rounded-ee-full border border-white hover:-translate-x-0.5 hover:translate-y-0.5 transition-all">
                 <div className="flex items-center flex-col">
-                  <h2 className="text-4xl font-[1000] font-[Public_sans]">1000+</h2>
-                  <div className="text-lg font-[Roboto]">Active Users</div>
+                  <h2 className="text-4xl font-[1000] font-[Public_sans]">{stats?.totalReports}</h2>
+                  <div className="text-lg font-[Roboto]">Total Reports</div>
                 </div>
               </div>
-              <div className="tile4 h-48 w-48 scale-125 bg-[var(--primary-color)] shadow-[0_0_8px_1px_rgba(0,0,0,0.5)] flex justify-center items-center rounded-e-full rounded-es-full border border-white hover:scale-[1.27] transition-all">
+              <div className="tile4 h-48 w-48 bg-[var(--primary-color)] shadow-[0_0_8px_1px_rgba(0,0,0,0.5)] flex justify-center items-center rounded-e-full rounded-es-full border border-white hover:translate-x-0.5 hover:translate-y-0.5 transition-all">
                 <div className="flex items-center flex-col">
-                  <h2 className="text-4xl font-[1000] font-[Public_sans]">1000+</h2>
-                  <div className="text-lg font-[Roboto]">Active Users</div>
+                  <h2 className="text-4xl font-[1000] font-[Public_sans]">{stats?.resolvedReports}</h2>
+                  <div className="text-lg font-[Roboto]">Resolved Reports</div>
                 </div>
               </div>
             </div>

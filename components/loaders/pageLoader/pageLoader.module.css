@@ -1,0 +1,46 @@
+.loader {
+  display: flex;
+  gap: .75rem;
+}
+
+.loader div {
+  width: .25rem;
+  background-color: #d99058;
+  border-radius: 16rem;
+}
+
+.loader div:nth-child(1) {
+  animation: bounceRotate .85s linear infinite;
+}
+
+.loader div:nth-child(2) {
+  animation: bounceRotate .85s 0.075s linear infinite;
+}
+
+.loader div:nth-child(3) {
+  animation: bounceRotate .85s 0.15s linear infinite;
+}
+
+.loader div:nth-child(4) {
+  animation: bounceRotate .85s 0.25s linear infinite;
+}
+
+@keyframes bounceRotate {
+  0% {
+    transform: translate(0, 0%) rotate(0deg);
+    height: .25rem;
+  }
+
+  25% {
+    height: 1rem;
+  }
+
+  50% {
+    transform: translate(0, -150%) rotate(180deg);
+  }
+
+  100% {
+    transform: translate(0, 0%) rotate(360deg);
+    height: .25rem;
+  }
+}

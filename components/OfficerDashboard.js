@@ -5,7 +5,7 @@ import Select from "react-select"
 import { toast } from "react-toastify"
 import { CldImage } from "next-cloudinary"
 import { useRouter } from "next/navigation"
-import Loader from "@/components/loaders/Loader"
+import BtnLoader from "@/components/loaders/btnLoader/BtnLoader"
 import ClientOnly from "./ClientOnly"
 
 const OfficerDashboard = () => {
@@ -222,7 +222,7 @@ const OfficerDashboard = () => {
                   {expandedReport.status === "pending" && (
                     <div className="loadingBtnsWrappers relative w-fit group">
                       <button disabled={isResolveLoading} onClick={() => { setIsPageLoaded(false); setIsResolveLoading(true); router.push(`/resolve?reportId=${expandedReport._id}`) }} className="primaryBtn">Resolve</button>
-                      {isResolveLoading && <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-all group-hover:scale-105 group-active:scale-100"><Loader /></div>}
+                      {isResolveLoading && <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-all group-hover:scale-105 group-active:scale-100"><BtnLoader /></div>}
                     </div>
                   )}
                 </div>
