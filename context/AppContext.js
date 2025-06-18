@@ -12,6 +12,7 @@ export const AuthProvider = ({ children, token }) => {
   const intervalRef = useRef(null)
   const router = useRouter()
   const [isAuthCycleOn, setIsAuthCycleOn] = useState(false)
+  const [displayNavLinks, setDisplayNavLinks] = useState(false)
 
   const startAuthCheckInterval = () => {
     if (!intervalRef.current) intervalRef.current = setInterval(checkAuth, 600000)
@@ -60,7 +61,7 @@ export const AuthProvider = ({ children, token }) => {
   }, [token])
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, user, setUser, isPageLoaded, setIsPageLoaded, checkAuth, stopAuthCheckInterval, isAuthCycleOn, setIsAuthCycleOn }}>
+    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, user, setUser, isPageLoaded, setIsPageLoaded, checkAuth, stopAuthCheckInterval, isAuthCycleOn, setIsAuthCycleOn, displayNavLinks, setDisplayNavLinks }}>
       {children}
     </AuthContext.Provider>
   )
