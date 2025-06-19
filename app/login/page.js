@@ -72,11 +72,11 @@ const Login = () => {
   ]
 
   return (
-    <main className="p-8 font-[Public_sans]">
+    <main className="p-8 font-[Public_sans] flex-1">
       <section>
-        <div className="loginFormContainer mx-auto w-1/3 bg-black/5 p-4 flex flex-col gap-4 rounded-md shadow-lg">
-          <h1 className="text-2xl font-[1000] w-full text-center">LOGIN</h1>
-          <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+        <div className="loginFormContainer mx-auto w-xl max-lg:w-lg max-sm:w-md max-[35rem]:w-full bg-black/5 p-4 flex flex-col gap-4 rounded-md shadow-lg">
+          <h1 className="text-2xl max-sm:text-xl font-[1000] w-full text-center">LOGIN</h1>
+          <form className="flex flex-col gap-4 max-sm:text-sm" onSubmit={handleSubmit(onSubmit)}>
             <div className="inputFieldContainer">
               <label className="ml-4" htmlFor="loginMethod">Login Using :</label>
               <div className="mt-2">
@@ -116,7 +116,7 @@ const Login = () => {
 
             <div className="loadingBtnsWrappers relative w-fit group">
               <input disabled={loginMethod === null || isSubmittingData} className={`primaryBtn ${loginMethod === null && "disabled:bg-[var(--primary-color)]! disabled:hover:bg-black/25! disabled:text-white!"}`} type="submit" value="SUBMIT" />
-              {isSubmittingData && <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-all group-hover:scale-105 group-active:scale-100"><BtnLoader /></div>}
+              {isSubmittingData && <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-all group-hover:scale-105 group-active:scale-100 max-sm:text-sm"><BtnLoader /></div>}
             </div>
             <p className="text-center">Don't have an account? <Link className="link" href="/register">Register</Link></p>
           </form>

@@ -17,6 +17,10 @@
   color: white;
 }
 
+label {
+  width: fit-content;
+}
+
 input:focus,
 textarea:focus,
 select:focus {

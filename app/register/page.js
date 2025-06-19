@@ -94,7 +94,6 @@ const Register = () => {
             toast.error(data.message)
           }
         })
-      console.log(formattedData)
     } catch (err) {
       console.error("Error registering user : ", err)
       toast.error("Error registering user!")
@@ -111,9 +110,9 @@ const Register = () => {
   return (
     <main className="p-8 font-[Public_sans]">
       <section>
-        <div className="loginFormContainer mx-auto w-1/3 bg-black/5 p-4 flex flex-col gap-4 rounded-md shadow-lg">
-          <h1 className="text-2xl font-[1000] w-full text-center">REGISTER</h1>
-          <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+        <div className="loginFormContainer mx-auto w-xl max-lg:w-lg max-sm:w-md max-[35rem]:w-full bg-black/5 p-4 flex flex-col gap-4 rounded-md shadow-lg">
+          <h1 className="text-2xl max-sm:text-xl font-[1000] w-full text-center">REGISTER</h1>
+          <form className="flex flex-col gap-4 max-sm:text-sm" onSubmit={handleSubmit(onSubmit)}>
             <div className="inputFieldContainer flex flex-col">
               <label className="mb-2 ml-4" htmlFor="name">Full Name <span className="text-red-500">*</span> :</label>
               <input {...register("name", { required: { value: true, message: "Name is required" }, minLength: { value: 4, message: "Minimum length is 4 characters" }, maxLength: { value: 50, message: "Maximum length is 50 characters" } })} className="border-2 bg-white border-[var(--primary-color)]/25 focus:border-[var(--primary-color)] transition-all rounded-xl p-3 disabled:cursor-not-allowed disabled:bg-black/25" type="text" id="name" placeholder="Full Name" />
