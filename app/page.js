@@ -29,7 +29,7 @@ const Home = () => {
           </div>
           <div className="max-sm:w-4/5 max-[28rem]:w-full max-[28rem]:mx-4 w-[45%]">
             <div className="relative h-80 max-lg:h-64 max-md:h-52 max-sm:h-64 max-[28rem]:h-48 w-full rounded-s-full overflow-hidden">
-              <Image className="" src="/assets/images/image1.jpg" alt="logo" fill style={{ objectFit: "cover" }} />
+              <Image src="/assets/images/image1.jpg" alt="logo" fill style={{ objectFit: "cover" }} />
             </div>
           </div>
         </div>
