@@ -24,8 +24,8 @@ const Home = () => {
       <section className="mx-6 my-10 max-sm:mt-6 max-sm:mb-10 max-[28rem]:mt-4 max-[28rem]:mx-4">
         <div className="max-w-[1600px] max-sm:flex-col max-sm:gap-6 max-[28rem]:gap-4 mx-auto flex justify-between items-center">
           <div className="titleContainer max-sm:w-full w-1/2">
-            <h1 className="text-5xl max-lg:text-4xl max-md:text-3xl max-[28rem]:text-2xl font-[1000] mb-4 max-sm:mb-2 font-[Public_sans]">Clean Streets Begin with You</h1>
-            <p className="text-xl max-lg:text-lg max-md:text-md max-[28rem]:text-sm font-[Roboto]">TrashTrack is a community-driven platform to report garbage issues, notify authorities, and track cleanliness progress for a cleaner environment.</p>
+            <h1 className="text-4xl max-lg:text-3xl max-md:text-2xl max-[28rem]:text-xl font-[1000] mb-4 max-sm:mb-2 font-[Public_sans]">Clean Streets Begin with You</h1>
+            <p className="text-lg max-lg:text-base max-md:text-sm font-[Roboto]">TrashTrack is a community-driven platform to report garbage issues, notify authorities, and track cleanliness progress for a cleaner environment.</p>
           </div>
           <div className="max-sm:w-4/5 max-[28rem]:w-full max-[28rem]:mx-4 w-[45%]">
             <div className="relative h-80 max-lg:h-64 max-md:h-52 max-sm:h-64 max-[28rem]:h-48 w-full rounded-s-full overflow-hidden">
@@ -67,8 +67,8 @@ const Home = () => {
             </div>
           </div>
           <div className="title2Container w-2/5 max-sm:w-full selection:!bg-white/75 selection:!text-black">
-            <h1 className="text-5xl max-lg:text-4xl max-md:text-3xl max-[28rem]:text-2xl font-[1000] mb-4 max-sm:mb-2 font-[Public_sans]">Join the Effort to Keep Our City Clean</h1>
-            <p className="text-xl max-lg:text-lg max-md:text-md max-[28rem]:text-sm font-[Roboto]">Our platform is designed to empower responsible citizens and unite local communities in taking actionable steps towards a cleaner, eco-friendly environment.</p>
+            <h1 className="text-4xl max-lg:text-3xl max-md:text-2xl max-[28rem]:text-xl font-[1000] mb-4 max-sm:mb-2 font-[Public_sans]">Join the Effort to Keep Our City Clean</h1>
+            <p className="text-lg max-lg:text-base max-md:text-sm font-[Roboto]">Our platform is designed to empower responsible citizens and unite local communities in taking actionable steps towards a cleaner, eco-friendly environment.</p>
           </div>
         </div>
       </section>
