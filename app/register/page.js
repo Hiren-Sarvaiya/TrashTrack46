@@ -108,7 +108,7 @@ const Register = () => {
   ]
 
   return (
-    <main className="p-8 font-[Public_sans]">
+    <main className="p-8 font-[Public_sans] flex-1">
       <section>
         <div className="loginFormContainer mx-auto w-xl max-lg:w-lg max-sm:w-md max-[35rem]:w-full bg-black/5 p-4 flex flex-col gap-4 rounded-md shadow-lg">
           <h1 className="text-2xl max-sm:text-xl font-[1000] w-full text-center">REGISTER</h1>

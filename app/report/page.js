@@ -209,7 +209,7 @@ const Report = () => {
   )
 
   return (
-    <main className="p-8">
+    <main className="p-8 flex-1">
       <div className="loginFormContainer mx-auto w-1/3 bg-black/5 p-4 flex flex-col gap-4 rounded-md shadow-lg">
         <h1 className="text-2xl font-[1000] w-full text-center">REPORT</h1>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>

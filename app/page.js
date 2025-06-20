@@ -20,7 +20,7 @@ const Home = () => {
   }, [stats])
 
   return (
-    <main>
+    <main className="flex-1">
       <section className="mx-6 my-10 max-sm:mt-6 max-sm:mb-10 max-[28rem]:mt-4 max-[28rem]:mx-4">
         <div className="max-w-[1600px] max-sm:flex-col max-sm:gap-6 max-[28rem]:gap-4 mx-auto flex justify-between items-center">
           <div className="titleContainer max-sm:w-full w-1/2">

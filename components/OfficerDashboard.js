@@ -16,6 +16,7 @@ const OfficerDashboard = () => {
   const [cities, setCities] = useState([])
   const [selectedFilters, setSelectedFilters] = useState({
     status: "all",
+    category: "all",
     anonymous: "all",
     city: "all",
     state: "all"
@@ -29,16 +30,30 @@ const OfficerDashboard = () => {
   const [hasMore, setHasMore] = useState(true)
   const [skip, setSkip] = useState(0)
   const [loadingMore, setLoadingMore] = useState(false)
+  const [reportsCount, setReportsCount] = useState(0)
 
-  const fetchReports = async () => {
+  const fetchReports = async (customSkip = skip) => {
     try {
       if (!user?.email && isAuthCycleOn) return
 
       setLoadingMore(true)
-      const res = await fetch(`/api/reports?purpose=dashboard&skip=${skip}&limit=20`)
+      const queryParams = new URLSearchParams({
+        view: "officer-dashboard",
+        status: selectedFilters.status,
+        category: selectedFilters.category,
+        anonymous: selectedFilters.anonymous,
+        city: selectedFilters.city,
+        state: selectedFilters.state,
+        searchQuery: searchQuery.trim(),
+        skip: customSkip.toString(),
+        limit: "20"
+      })
+
+      const res = await fetch(`/api/reports?${queryParams.toString()}`)
       const data = await res.json()
 
       if (data.success) {
+        setReportsCount(data.total)
         setReports(prev => [...prev, ...data.reports.filter(r => !prev.some(p => p._id === r._id))])
         setSkip(prev => prev + 20)
         if (reports.length + data.reports.length >= data.total) setHasMore(false)
@@ -50,12 +65,28 @@ const OfficerDashboard = () => {
       toast.error("Something went wrong!")
     } finally {
       setLoadingMore(false)
+      setIsPageLoaded(true)
       setLoadingStatus(prev => ({ ...prev, reports: true }))
     }
   }
+
   useEffect(() => {
-    fetchReports()
+    setSkip(0)
+    setReports([])
+    setHasMore(true)
+    fetchReports(0)
   }, [user])
+
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      setSkip(0)
+      setReports([])
+      setHasMore(true)
+      fetchReports(0)
+    }, 750)
+
+    return () => clearTimeout(delay)
+  }, [searchQuery, selectedFilters])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -69,20 +100,6 @@ const OfficerDashboard = () => {
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [hasMore, loadingMore])
-
-  const filteredReports = useMemo(() => {
-    if (reports.length === 0) return []
-
-    return reports.filter((report) => {
-      const matchesStatus = selectedFilters.status === "all" || report.status === selectedFilters.status
-      const isAnonymous = report.isAnonymous
-      const matchesAnon = selectedFilters.anonymous === "all" || (selectedFilters.anonymous === "anonymous" ? isAnonymous : !isAnonymous)
-      const matchesSearch = searchQuery.trim().split(/\s+/).some(qw => report.title.toLowerCase().split(/\s+/).some(tw => tw.includes(qw.toLowerCase())))
-      const matchesCity = selectedFilters.city === "all" || report.city === selectedFilters.city
-      const matchesState = selectedFilters.state === "all" || report.state === selectedFilters.state
-      return matchesStatus && matchesAnon && matchesSearch && matchesCity && matchesState
-    })
-  }, [reports, selectedFilters, searchQuery])
 
   useEffect(() => {
     const fetchCities = async () => {
@@ -119,8 +136,8 @@ const OfficerDashboard = () => {
   }, [])
 
   useEffect(() => {
-    if (loadingStatus.reports && loadingStatus.cities && filteredReports.length !== 0) setIsPageLoaded(true)
-  }, [loadingStatus, filteredReports])
+    if (loadingStatus.reports && loadingStatus.cities) setIsPageLoaded(true)
+  }, [loadingStatus])
 
   const filterOptions = {
     status: [
@@ -134,7 +151,21 @@ const OfficerDashboard = () => {
       { value: "not anonymous", label: "Not anonymous" }
     ],
     state: states,
-    city: cities
+    city: cities,
+    category: [
+      { value: "all", label: "All" },
+      { value: "road_dump", label: "Road Dump" },
+      { value: "unpicked_garbage", label: "Unpicked Waste" },
+      { value: "overflowing_dustbin", label: "Overflowing Bin" },
+      { value: "near_water_body", label: "Waterbody Waste" },
+      { value: "dead_animal", label: "Dead Animal" },
+      { value: "illegal_dumping", label: "Illegal Dump" },
+      { value: "industrial_waste", label: "Industrial Waste" },
+      { value: "open_dumpyard", label: "Open Yard" },
+      { value: "hospital_waste", label: "Medical Waste" },
+      { value: "market_waste", label: "Market Waste" },
+      { value: "wastewater_leak", label: "Water Leak" }
+    ]
   }
 
   const reportCategories = [
@@ -151,16 +182,34 @@ const OfficerDashboard = () => {
     { value: "wastewater_leak", label: "Leakage of wastewater or sewage" }
   ]
 
+  const togglePageScroll = (allowScroll) => {
+    const html = document.documentElement
+    const body = document.body
+    if (allowScroll) {
+      html.style.overflow = ""
+      body.style.overflow = ""
+      html.style.height = ""
+      body.style.height = ""
+    } else {
+      html.style.overflow = "hidden"
+      body.style.overflow = "hidden"
+      html.style.height = "100%"
+      body.style.height = "100%"
+    }
+  }
+
   const handleOverlayClick = (purpose, delay) => {
     if (purpose === "report-view") {
       setExpandedId(null)
       setTimeout(() => {
         setWaitForPopUps(false)
+        togglePageScroll(true)
       }, delay)
     } else {
       setAreFiltersTriggered(false)
       setTimeout(() => {
         setWaitForPopUps(false)
+        togglePageScroll(true)
       }, delay)
     }
   }
@@ -168,15 +217,16 @@ const OfficerDashboard = () => {
   const expandedReport = reports.find(r => r._id?.toString() === expandedId?.toString())
 
   return (
-    <main className="p-4">
+    <main className="p-4 flex-1">
       <h1 className="text-3xl font-[1000] font-[Public_sans] mb-4">DASHBOARD</h1>
       <section>
-        <div className="flex justify-between items-center mb-4 font-[Public_sans]">
+        <div className="flex justify-between items-center mb-2 font-[Public_sans]">
           <input type="text" className="border-2 border-[var(--primary-color)]/25 focus:border-[var(--primary-color)] transition-all rounded-xl p-2 w-2/5 max-[300px]:w-1/3 max-[775px]:text-sm max-[500px]:text-[12px] max-[300px]:text-[10px]" placeholder="Search reports by title..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
           <div className="flex items-center w-fit justify-between max-[775px]:text-sm max-[500px]:text-[12px] max-[300px]:text-[10px]">
-            <button onClick={() => { if (!waitForPopUps) { setWaitForPopUps(true); setAreFiltersTriggered(true) } }} className="primaryBtn">Filters</button>
+            <button onClick={() => { if (!waitForPopUps) { setWaitForPopUps(true); setAreFiltersTriggered(true); togglePageScroll(false) } }} className="primaryBtn">Filters</button>
           </div>
         </div>
+        <div className="reportsCount mb-4"><span className="font-semibold">{(searchQuery === "" && Object.values(selectedFilters).every(v => v === "all")) ? "Total Reports : " : "Matched Reports : "}</span>{reportsCount}</div>
         <div onClick={() => (expandedId && handleOverlayClick("report-view", 300) || areFiltersTriggered && handleOverlayClick("filters", 150))} className={`overlayContainer flex justify-center items-center fixed top-0 left-0 h-dvh w-dvw ${waitForPopUps ? "z-50 bg-black/50" : "-z-20 bg-transparent"} transition-all`}>
           <div onClick={(e) => e.stopPropagation()} className={`filter fixed font-[Public_sans] p-8 ${waitForPopUps && areFiltersTriggered ? "right-0" : "-right-96"} transition-all duration-300 z-[75] h-dvh w-96 bg-white`}>
             <h1 className="text-xl font-semibold mb-2">FILTERS :</h1>
@@ -185,6 +235,12 @@ const OfficerDashboard = () => {
                 <div className="pl-2 mb-1">Status :</div>
                 <ClientOnly>
                   <Select className="w-full text-black" value={filterOptions.status.find(opt => opt.value === selectedFilters.status)} options={filterOptions.status} onChange={selected => setSelectedFilters(prev => ({ ...prev, status: selected.value }))} isSearchable={false} classNamePrefix="customSelect" placeholder="Select" />
+                </ClientOnly>
+              </div>
+              <div>
+                <div className="pl-2 mb-1">Categories :</div>
+                <ClientOnly>
+                  <Select className="w-full text-black" value={filterOptions.category.find(opt => opt.value === selectedFilters.category)} options={filterOptions.category} onChange={selected => setSelectedFilters(prev => ({ ...prev, category: selected.value }))} isSearchable={false} classNamePrefix="customSelect" placeholder="Select" />
                 </ClientOnly>
               </div>
               <div>
@@ -206,7 +262,7 @@ const OfficerDashboard = () => {
                 </ClientOnly>
               </div>
               <div>
-                <button onClick={() => setSelectedFilters({ status: "all", anonymous: "all", city: "all", state: "all" })} className="primaryBtn">Clear All</button>
+                <button onClick={() => setSelectedFilters({ status: "all", category: "all", anonymous: "all", city: "all", state: "all" })} className="primaryBtn">Clear All</button>
               </div>
             </div>
           </div>
@@ -267,11 +323,11 @@ const OfficerDashboard = () => {
           </div>
         </div>
         <div className="reportsContainer grid grid-cols-4 gap-4">
-          {filteredReports.length !== 0 ?
+          {reports.length !== 0 ?
             <>
-              {filteredReports.map((report) => (
-                <div key={report._id} className={`card relative group font-[Roboto] flex flex-col gap-4 transition-all ease-in-out ${report.status === "resolved" ? "bg-green-500/25 hover:bg-green-500/35" : "bg-red-500/25 hover:bg-red-500/35"} rounded-xl p-4 pb-14 hover:shadow-[4px_4px_4px_1px_#00000080] hover:-translate-1`}>
-                  <div className="cardHeader flex justify-between">
+              {reports.map((report, i) => (
+                <div key={i} className={`card relative group font-[Roboto] flex flex-col gap-4 transition-all ease-in-out ${report.status === "resolved" ? "bg-green-500/25 hover:bg-green-500/35" : "bg-red-500/25 hover:bg-red-500/35"} rounded-xl p-4 pb-14 hover:shadow-[4px_4px_4px_1px_#00000080] hover:-translate-1`}>
+                  <div className="cardHeader flex justify-between gap-2">
                     <div className="title text-xl font-semibold line-clamp-2 overflow-hidden text-ellipsis">{report.title}</div>
                     <div className="status font-mono h-fit bg-[var(--primary-color)]/25 group-hover:bg-[var(--primary-color)]/50 transition-colors px-2 py-1 rounded-md">{report.status[0].toUpperCase() + report.status.slice(1)}</div>
                   </div>
@@ -279,7 +335,7 @@ const OfficerDashboard = () => {
                   <div className="category font-mono bg-[var(--primary-color)]/25 group-hover:bg-[var(--primary-color)]/50 transition-colors px-2 py-1 rounded-md w-fit">{reportCategories.find(element => element.value === report.category)?.label}</div>
                   <div className="cardFooter absolute bottom-2 left-0 w-full px-4 flex justify-between items-center">
                     <div className="submittedAt">{new Date(report.submittedAt).toLocaleDateString("en-GB")}</div>
-                    <button onClick={() => { if (!waitForPopUps) { setWaitForPopUps(true); setExpandedId(report._id) } }} className="primaryBtn actionBtn">Expand</button>
+                    <button onClick={() => { if (!waitForPopUps) { setWaitForPopUps(true); setExpandedId(report._id); togglePageScroll(false) } }} className="primaryBtn actionBtn">Expand</button>
                   </div>
                 </div>
               ))}

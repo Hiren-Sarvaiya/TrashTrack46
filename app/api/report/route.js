@@ -61,34 +61,16 @@ export async function POST(req) {
 export async function GET(req) {
   try {
     const { searchParams } = new URL(req.url)
-    const submittedBy = searchParams.get("submittedBy")
     const reportId = searchParams.get("reportId")
 
     if (reportId) {
       const report = await Report.findById(reportId)
       if (!report) return NextResponse.json({ message: "Report not found" }, { status: 404 })
       return NextResponse.json({ success: true, report }, { status: 200 })
-    }
-
-    if (submittedBy) {
-      const allReports = await Report.find().sort({ submittedAt: -1 })
-      const matchedReports = []
-
-      for (const report of allReports) {
-        if (report.submittedBy === submittedBy) {
-          matchedReports.push(report)
-        } else {
-          if (await bcrypt.compare(submittedBy, report.submittedBy)) matchedReports.push(report)
-        }
-      }
-
-      return NextResponse.json({ success: true, reports: matchedReports }, { status: 200 })
-    }
-
-    return NextResponse.json({ message: "Either reportId or submittedBy is required" }, { status: 400 })
+    } else return NextResponse.json({ message: "Report id is required" }, { status: 400 })
   } catch (err) {
     console.error(err)
-    return NextResponse.json({ message: "Error fetching report(s)", error: err.message }, { status: 500 })
+    return NextResponse.json({ message: "Error fetching report", error: err.message }, { status: 500 })
   }
 }
 

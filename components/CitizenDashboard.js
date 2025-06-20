@@ -22,44 +22,74 @@ const CitizenDashboard = () => {
   const [outerDeletingId, setOuterDeletingId] = useState(null)
   const [waitForPopUps, setWaitForPopUps] = useState(false)
   const MySwal = withReactContent(Swal)
+  const [hasMore, setHasMore] = useState(true)
+  const [skip, setSkip] = useState(0)
+  const [loadingMore, setLoadingMore] = useState(false)
+  const [reportsCount, setReportsCount] = useState(0)
+
+  const fetchReports = async (customSkip = skip) => {
+    try {
+      if (!user?.email && isAuthCycleOn) return
+
+      setLoadingMore(true)
+      const queryParams = new URLSearchParams({
+        view: "citizen-dashboard",
+        submittedBy: user.email,
+        status: selectedFilter,
+        searchQuery: searchQuery.trim(),
+        skip: customSkip.toString(),
+        limit: "20"
+      })
+      const res = await fetch(`/api/reports?${queryParams.toString()}`)
+      const data = await res.json()
+
+      if (data.success) {
+        setReportsCount(data.total)
+        setReports(prev => [...prev, ...data.reports.filter(r => !prev.some(p => p._id === r._id))])
+        setSkip(prev => prev + 20)
+        if (reports.length + data.reports.length >= data.total) setHasMore(false)
+      } else {
+        toast.error(data.message)
+      }
+    } catch (err) {
+      console.error("Error fetching reports:", err)
+      toast.error("Something went wrong!")
+    } finally {
+      setLoadingMore(false)
+      setIsPageLoaded(true)
+    }
+  }
 
   useEffect(() => {
-    const fetchReports = async () => {
-      try {
-        if (!user?.email && isAuthCycleOn) return
-        await fetch(`/api/report?submittedBy=${user.email}`)
-          .then(res => res.json())
-          .then(data => {
-            if (data.success) {
-              if (data.reports.length !== 0) setReports(data.reports)
-              else setIsPageLoaded(true)
-            } else {
-              toast.error(data.message)
-            }
-          })
-      } catch (err) {
-        console.error("Error fetching reports : ", err)
-        toast.error("Something went wrong!")
-      }
-    }
-    fetchReports()
+    setSkip(0)
+    setReports([])
+    setHasMore(true)
+    fetchReports(0)
   }, [user])
 
-  const filteredReports = useMemo(() => {
-    if (reports.length === 0) return []
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      setSkip(0)
+      setReports([])
+      setHasMore(true)
+      fetchReports(0)
+    }, 750)
 
-    return reports.filter(report => {
-      const matchesStatus = selectedFilter === "all" || report.status === selectedFilter
-      const searchWords = searchQuery.trim().toLowerCase().split(/\s+/)
-      const titleWords = report.title.toLowerCase().split(/\s+/)
-      const matchesSearch = searchWords.some(qw => titleWords.some(tw => tw.includes(qw)))
-      return matchesStatus && matchesSearch
-    })
-  }, [reports, selectedFilter, searchQuery])
+    return () => clearTimeout(delay)
+  }, [searchQuery, selectedFilter])
 
   useEffect(() => {
-    if (filteredReports.length !== 0) setIsPageLoaded(true)
-  }, [filteredReports])
+    const handleScroll = () => {
+      const scrollHeight = document.documentElement.scrollHeight
+      const scrollTop = document.documentElement.scrollTop
+      const clientHeight = document.documentElement.clientHeight
+
+      if (Math.ceil(scrollTop + clientHeight) >= scrollHeight && hasMore && !loadingMore) fetchReports()
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [hasMore, loadingMore])
 
   const filterOptions = [
     { value: "all", label: "All" },
@@ -120,20 +150,37 @@ const CitizenDashboard = () => {
     }
   }
 
+  const togglePageScroll = (allowScroll) => {
+    const html = document.documentElement
+    const body = document.body
+    if (allowScroll) {
+      html.style.overflow = ""
+      body.style.overflow = ""
+      html.style.height = ""
+      body.style.height = ""
+    } else {
+      html.style.overflow = "hidden"
+      body.style.overflow = "hidden"
+      html.style.height = "100%"
+      body.style.height = "100%"
+    }
+  }
+
   const handleOverlayClick = () => {
     setExpandedId(null)
     setTimeout(() => {
       setWaitForPopUps(false)
+      togglePageScroll(true)
     }, 300)
   }
 
   const expandedReport = reports.find(r => r._id?.toString() === expandedId?.toString())
 
   return (
-    <main className="p-4">
+    <main className="p-4 flex-1">
       <h1 className="text-3xl font-[1000] font-[Public_sans] mb-4">MY REPORTS</h1>
       <section>
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center mb-2">
           <input type="text" className="border-2 border-[var(--primary-color)]/25 focus:border-[var(--primary-color)] transition-all rounded-xl p-2 w-2/5 max-[300px]:w-1/3 max-[775px]:text-sm max-[500px]:text-[12px] max-[300px]:text-[10px]" placeholder="Search reports by title..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
           <div className="flex items-center w-fit justify-between max-[775px]:text-sm max-[500px]:text-[12px] max-[300px]:text-[10px]">
             <ClientOnly>
@@ -141,6 +188,7 @@ const CitizenDashboard = () => {
             </ClientOnly>
           </div>
         </div>
+        <div className="reportsCount mb-4"><span className="font-semibold">{(searchQuery === "" && selectedFilter === "all") ? "Total Reports : " : "Matched Reports : "}</span>{reportsCount}</div>
         <div onClick={handleOverlayClick} className={`overlayContainer flex justify-center items-center fixed top-0 left-0 h-dvh w-dvw ${waitForPopUps ? "z-50 bg-black/50" : "-z-20 bg-transparent"} transition-all`}>
           <div onClick={(e) => e.stopPropagation()} className={`flex flex-col gap-6 ${expandedReport?.images.length !== 0 ? "h-4/5" : "h-fit"} ${waitForPopUps && expandedId ? "opacity-100 scale-100" : "opacity-0 scale-50"} transition-all duration-300 w-3/5 bg-white rounded-xl p-8 font-[Roboto] overflow-y-auto`}>
             {expandedId?.toString() && (
@@ -190,11 +238,11 @@ const CitizenDashboard = () => {
           </div>
         </div>
         <div className="reportsContainer grid grid-cols-4 gap-4">
-          {filteredReports.length !== 0 ?
+          {reports.length !== 0 ?
             <>
-              {filteredReports.map((report, i) => (
+              {reports.map((report, i) => (
                 <div key={i} className={`card relative group font-[Roboto] flex flex-col gap-4 transition-all ease-in-out ${outerDeletingId === report._id ? "!bg-gray-900/25 !cursor-not-allowed !select-none" : ""} ${innerDeletingId === report._id ? "opacity-0 scale-95" : "opacity-100 scale-100"} ${innerDeletingId === report._id ? "duration-500" : "duration-150"} ${report.status === "resolved" ? "bg-green-500/25 hover:bg-green-500/35" : "bg-red-500/25 hover:bg-red-500/35"} rounded-xl p-4 pb-14 hover:shadow-[4px_4px_4px_1px_#00000080] hover:-translate-1`}>
-                  <div className="cardHeader flex justify-between">
+                  <div className="cardHeader flex justify-between gap-2">
                     <div className="title text-xl font-semibold line-clamp-2 overflow-hidden text-ellipsis">{report.title}</div>
                     <div className="status font-mono h-fit bg-[var(--primary-color)]/25 group-hover:bg-[var(--primary-color)]/50 transition-colors px-2 py-1 rounded-md">{report.status[0].toUpperCase() + report.status.slice(1)}</div>
                   </div>
@@ -203,7 +251,7 @@ const CitizenDashboard = () => {
                   <div className="cardFooter absolute bottom-2 left-0 w-full px-4 flex justify-between items-center">
                     <div className="submittedAt">{new Date(report.submittedAt).toLocaleDateString("en-GB")}</div>
                     {report.status === "pending" && <MdDelete onClick={() => handleDeleteReport(report._id.toString())} size="2rem" className="text-[var(--primary-color)]/75 hover:text-[var(--primary-color)] cursor-pointer" />}
-                    <button onClick={() => { setWaitForPopUps(true); setExpandedId(report._id) }} className="primaryBtn actionBtn">Expand</button>
+                    <button onClick={() => { setWaitForPopUps(true); setExpandedId(report._id); togglePageScroll(false) }} className="primaryBtn actionBtn">Expand</button>
                   </div>
                 </div>
               ))}
@@ -211,6 +259,14 @@ const CitizenDashboard = () => {
             <p>No reports found</p>
           }
         </div>
+        {loadingMore && (
+          <div className="loaderCardsContainer flex gap-4 mt-4">
+            <div style={{ height: document.querySelector(".reportsContainer")?.lastElementChild?.offsetHeight + "px" }} className="loaderCards"></div>
+            <div style={{ height: document.querySelector(".reportsContainer")?.lastElementChild?.offsetHeight + "px" }} className="loaderCards"></div>
+            <div style={{ height: document.querySelector(".reportsContainer")?.lastElementChild?.offsetHeight + "px" }} className="loaderCards"></div>
+            <div style={{ height: document.querySelector(".reportsContainer")?.lastElementChild?.offsetHeight + "px" }} className="loaderCards"></div>
+          </div>
+        )}
       </section>
       <Link onClick={() => setIsPageLoaded(false)} href="/report" onMouseEnter={() => setIsAddHovered(false)} onMouseLeave={() => setIsAddHovered(true)} className="addReportContainer z-49 group flex gap-2 items-center transition-all border-2 border-[var(--primary-color)] bg-white w-fit rounded-full pl-2 py-2 fixed bottom-8 right-8 cursor-pointer hover:pr-6 active:scale-95">
         <BsPlusLg size={32} className={`text-[var(--primary-color)] ${isAddHovered ? "rotate-0 duration-500" : "-rotate-90 duration-300"} transition-transform ease-in-out group-active:opacity-75`} />

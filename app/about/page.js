@@ -21,7 +21,7 @@ const About = () => {
   }, [imgLoadCount])
 
   return (
-    <main>
+    <main className="flex-1">
       <section className="h-[50vh] max-[52rem]:h-[32vh] max-sm:h-[25vh] w-full bg-[url('/assets/images/image11.jpg')] relative bg-cover bg-center flex justify-center items-center">
         <div className="aboutHeadingContainer bg-[var(--primary-color)] w-fit px-8 py-12 max-[52rem]:px-6 max-[52rem]:py-10 max-sm:px-4 max-sm:py-8 max-[28rem]:px-3 max-[28rem]:py-7 rounded-[100px/30px] z-10">
           <h1 className="text-4xl max-[52rem]:text-3xl max-sm:text-3xl max-[28rem]:text-2xl font-[1000] text-white selection:!bg-white/75 selection:!text-[var(--primary-color)]">ABOUT TRASHTRACK</h1>
