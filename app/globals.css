@@ -99,7 +99,7 @@ body.react-confirm-alert-body-element {
   position: relative;
   overflow: hidden;
   height: 192px;
-  width: 25%;
+  width: 100%;
   border-radius: .75rem;
   background-color: #000000b8;
 }

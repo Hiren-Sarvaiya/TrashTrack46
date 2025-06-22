@@ -1,12 +1,11 @@
 "use client"
 import { useAppContext } from "@/context/AppContext"
 import Link from "next/link"
-import { useEffect, useState, useMemo } from "react"
+import { useEffect, useState } from "react"
 import Select from "react-select"
 import { BsPlusLg } from "react-icons/bs"
 import { toast } from "react-toastify"
-import { CldImage } from "next-cloudinary"
-import { MdDelete } from "react-icons/md"
+import { MdDeleteForever } from "react-icons/md"
 import Swal from "sweetalert2"
 import withReactContent from "sweetalert2-react-content"
 import ClientOnly from "./ClientOnly"
@@ -15,7 +14,10 @@ const CitizenDashboard = () => {
   const { user, setIsPageLoaded, isAuthCycleOn } = useAppContext()
   const [reports, setReports] = useState([])
   const [searchQuery, setSearchQuery] = useState("")
-  const [selectedFilter, setSelectedFilter] = useState("all")
+  const [selectedFilters, setSelectedFilters] = useState({
+    status: "all",
+    limit: "20"
+  })
   const [isAddHovered, setIsAddHovered] = useState(false)
   const [expandedId, setExpandedId] = useState(null)
   const [innerDeletingId, setInnerDeletingId] = useState(null)
@@ -26,6 +28,7 @@ const CitizenDashboard = () => {
   const [skip, setSkip] = useState(0)
   const [loadingMore, setLoadingMore] = useState(false)
   const [reportsCount, setReportsCount] = useState(0)
+  const [hasMounted, setHasMounted] = useState(false)
 
   const fetchReports = async (customSkip = skip) => {
     try {
@@ -35,10 +38,10 @@ const CitizenDashboard = () => {
       const queryParams = new URLSearchParams({
         view: "citizen-dashboard",
         submittedBy: user.email,
-        status: selectedFilter,
+        status: selectedFilters.status,
         searchQuery: searchQuery.trim(),
         skip: customSkip.toString(),
-        limit: "20"
+        limit: selectedFilters.limit
       })
       const res = await fetch(`/api/reports?${queryParams.toString()}`)
       const data = await res.json()
@@ -68,6 +71,7 @@ const CitizenDashboard = () => {
   }, [user])
 
   useEffect(() => {
+    if (!hasMounted) return
     const delay = setTimeout(() => {
       setSkip(0)
       setReports([])
@@ -76,26 +80,33 @@ const CitizenDashboard = () => {
     }, 750)
 
     return () => clearTimeout(delay)
-  }, [searchQuery, selectedFilter])
+  }, [searchQuery, selectedFilters])
+
+  useEffect(() => { setHasMounted(true) }, [])
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollHeight = document.documentElement.scrollHeight
-      const scrollTop = document.documentElement.scrollTop
-      const clientHeight = document.documentElement.clientHeight
-
-      if (Math.ceil(scrollTop + clientHeight) >= scrollHeight && hasMore && !loadingMore) fetchReports()
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 10 && hasMore && !loadingMore) fetchReports()
     }
 
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [hasMore, loadingMore])
 
-  const filterOptions = [
-    { value: "all", label: "All" },
-    { value: "pending", label: "Pending" },
-    { value: "resolved", label: "Resolved" }
-  ]
+  const filterOptions = {
+    status: [
+      { value: "all", label: "All" },
+      { value: "pending", label: "Pending" },
+      { value: "resolved", label: "Resolved" }
+    ],
+    limit: [
+      { value: "20", label: "20" },
+      { value: "40", label: "40" },
+      { value: "60", label: "60" },
+      { value: "80", label: "80" },
+      { value: "100", label: "100" }
+    ]
+  }
 
   const reportCategories = [
     { value: "road_dump", label: "Garbage dumped on road" },
@@ -143,7 +154,7 @@ const CitizenDashboard = () => {
           }
         })
     } catch (err) {
-      console.log("Error deleting report : ", err)
+      console.error("Error deleting report : ", err)
       toast.error("Error deleting report!")
     } finally {
       setOuterDeletingId(null)
@@ -177,98 +188,97 @@ const CitizenDashboard = () => {
   const expandedReport = reports.find(r => r._id?.toString() === expandedId?.toString())
 
   return (
-    <main className="p-4 flex-1">
-      <h1 className="text-3xl font-[1000] font-[Public_sans] mb-4">MY REPORTS</h1>
+    <main className="p-4 flex-1 w-full max-w-[1792px] mx-auto">
+      <h1 className="text-3xl max-xl:text-2xl max-lg:text-xl font-[1000] font-[Public_sans] mb-2">MY REPORTS</h1>
       <section>
-        <div className="flex justify-between items-center mb-2">
-          <input type="text" className="border-2 border-[var(--primary-color)]/25 focus:border-[var(--primary-color)] transition-all rounded-xl p-2 w-2/5 max-[300px]:w-1/3 max-[775px]:text-sm max-[500px]:text-[12px] max-[300px]:text-[10px]" placeholder="Search reports by title..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
-          <div className="flex items-center w-fit justify-between max-[775px]:text-sm max-[500px]:text-[12px] max-[300px]:text-[10px]">
-            <ClientOnly>
-              <Select className="w-[8rem] max-[775px]:w-[7.25rem] max-[500px]:w-[6.25rem] text-black" value={filterOptions.find((opt) => opt.value === selectedFilter)} onChange={(selected) => setSelectedFilter(selected.value)} options={filterOptions} isSearchable={false} classNamePrefix="customSelect" placeholder="Select" />
-            </ClientOnly>
+        <div className="flex max-[36rem]:flex-col max-[36rem]:items-start justify-between items-center gap-4 max-[36rem]:gap-2 max-[30rem]:text-sm mb-4">
+          <input type="text" className="border-2 border-[var(--primary-color)]/25 focus:border-[var(--primary-color)] transition-all rounded-xl p-2 w-2/5 max-[55rem]:w-3/5 max-[36rem]:w-full" placeholder="Search reports by title..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+          <div className="flex max-[36rem]:justify-between max-[36rem]:w-full gap-4">
+            <div>
+              <ClientOnly>
+                <Select className="w-32 text-black" value={filterOptions.status.find((opt) => opt.value === selectedFilters.status)} onChange={selected => setSelectedFilters(prev => ({ ...prev, status: selected.value }))} options={filterOptions.status} isSearchable={false} classNamePrefix="customSelect" />
+              </ClientOnly>
+            </div>
+            <div>
+              <ClientOnly>
+                <Select className="w-36 text-black" value={filterOptions.limit.find((opt) => opt.value === selectedFilters.limit)} onChange={selected => setSelectedFilters(prev => ({ ...prev, limit: selected.value }))} options={filterOptions.limit} isSearchable={false} classNamePrefix="customSelect" formatOptionLabel={(e, { context }) => context === "value" ? `${e.value} of ${reportsCount}` : e.label} />
+              </ClientOnly>
+            </div>
           </div>
         </div>
-        <div className="reportsCount mb-4"><span className="font-semibold">{(searchQuery === "" && selectedFilter === "all") ? "Total Reports : " : "Matched Reports : "}</span>{reportsCount}</div>
         <div onClick={handleOverlayClick} className={`overlayContainer flex justify-center items-center fixed top-0 left-0 h-dvh w-dvw ${waitForPopUps ? "z-50 bg-black/50" : "-z-20 bg-transparent"} transition-all`}>
-          <div onClick={(e) => e.stopPropagation()} className={`flex flex-col gap-6 ${expandedReport?.images.length !== 0 ? "h-4/5" : "h-fit"} ${waitForPopUps && expandedId ? "opacity-100 scale-100" : "opacity-0 scale-50"} transition-all duration-300 w-3/5 bg-white rounded-xl p-8 font-[Roboto] overflow-y-auto`}>
+          <div onClick={(e) => e.stopPropagation()} className={`flex flex-col gap-6 max-[55rem]:gap-4 min-h-1/2 max-h-4/5 max-sm:max-h-11/12 w-3/5 max-2xl:w-4/5 ${waitForPopUps && expandedId ? "opacity-100 scale-100" : "opacity-0 scale-50"} transition-all duration-300 bg-white rounded-xl p-8 max-2xl:p-6 max-lg:p-4 max-[32rem]:p-3 font-[Roboto] overflow-y-auto`}>
             {expandedId?.toString() && (
               <>
-                <div className="flex justify-between">
-                  <div className="text-3xl font-bold">{expandedReport.title.toUpperCase()}</div>
-                  <div className="font-mono h-fit bg-[var(--primary-color)]/50 px-3 py-1 rounded-md">{expandedReport.status[0].toUpperCase() + expandedReport.status.slice(1)}</div>
+                <div className="flex max-[32rem]:flex-col justify-between gap-4 max-[32rem]:gap-1">
+                  <div className="text-3xl max-[55rem]:text-2xl max-md:text-xl max-[32rem]:text-lg font-bold">{expandedReport.title.toUpperCase()}</div>
+                  <div className={`font-mono max-[30rem]:text-sm text-white h-fit w-fit ${expandedReport.status === "resolved" ? "bg-[#43b581]/85" : "bg-[#d6363f]/85"} px-3 py-1 rounded-md`}>{expandedReport.status[0].toUpperCase() + expandedReport.status.slice(1)}</div>
                 </div>
-                <div className="font-mono h-fit bg-[var(--primary-color)]/50 px-3 py-1 rounded-md w-fit">{reportCategories.find(element => element.value === expandedReport.category)?.label}</div>
-                <div className="text-lg"><span className="font-semibold">DESCRIPTION : </span>{expandedReport.desc}</div>
-                {expandedReport.officerResponse && <div className="text-lg"><span className="font-semibold">OFFICER'S RESPONSE : </span>{expandedReport.officerResponse}</div>}
-                <div className="text-lg">
-                  <div><span className="font-semibold">ADDRESS :</span> {expandedReport.address}</div>
-                  <div className="flex gap-2 pl-[5.8rem]">
-                    <span>{expandedReport.city.split(" ").map(value => value[0].toUpperCase() + value.slice(1)).join(" ")}</span>
-                    <span>|</span>
-                    <span>{expandedReport.state.split(" ").map(value => value[0].toUpperCase() + value.slice(1)).join(" ")}</span>
-                    <span>|</span>
-                    <span>{expandedReport.pincode}</span>
-                  </div>
-                </div>
-                {expandedReport.resolvedBy && <div className="text-lg font-semibold"><span className="font-semibold">RESOLVED BY :</span> {expandedReport.resolvedBy}</div>}
+                <div className="font-mono max-[30rem]:text-sm h-fit bg-[var(--primary-color)]/50 px-3 py-1 rounded-md w-fit">{reportCategories.find(element => element.value === expandedReport.category)?.label}</div>
+                <div className="text-justify text-lg max-[55rem]:text-base max-[30rem]:text-sm"><span className="font-semibold">DESCRIPTION : </span>{expandedReport.desc}</div>
+                {expandedReport.officerResponse && <div className="text-justify text-lg max-[55rem]:text-base max-[30rem]:text-sm"><span className="font-semibold">OFFICER'S RESPONSE : </span>{expandedReport.officerResponse}</div>}
+                <div className="text-justify"><span className="font-semibold text-lg max-[55rem]:text-base max-[30rem]:text-sm">ADDRESS :</span> {`${expandedReport.address}, ${expandedReport.city.split(" ").map(value => value[0].toUpperCase() + value.slice(1)).join(" ")}, ${expandedReport.state.split(" ").map(value => value[0].toUpperCase() + value.slice(1)).join(" ")} - ${expandedReport.pincode}`}</div>
+                {expandedReport.resolvedBy && <div className="text-lg max-[55rem]:text-base max-[30rem]:text-sm"><span className="font-semibold">RESOLVED BY :</span> {expandedReport.resolvedBy}</div>}
                 {expandedReport.images.length !== 0 && (
                   <div>
-                    <div className="text-lg font-semibold">IMAGES :</div>
-                    <div className="flex flex-wrap gap-4">
+                    <div className="text-lg max-[55rem]:text-base max-[30rem]:text-sm font-semibold">IMAGES :</div>
+                    <div className="imgLinks flex flex-wrap gap-4 max-[30rem]:gap-2 mt-1 max-[30rem]:text-sm">
                       {expandedReport.images.map((img, i) => (
-                        <CldImage key={i} src={img} alt="img" width={0} height={0} sizes="50vw" className="h-fit w-auto max-w-[45%] border border-[var(--primary-color)]/50" />
+                        <button key={i} className="primaryBtn actionBtn"><Link key={i} href={img} target="_blank" rel="noopener noreferrer">{`Image ${i + 1}`}</Link></button>
                       ))}
                     </div>
                   </div>
                 )}
                 {expandedReport.resolvedImages.length !== 0 && (
                   <div>
-                    <div className="text-lg font-semibold">RESOLVED IMAGES :</div>
-                    <div className="flex flex-wrap gap-4">
+                    <div className="text-lg max-[55rem]:text-base max-[30rem]:text-sm font-semibold">RESOLVED IMAGES :</div>
+                    <div className="imgLinks flex flex-wrap gap-4 max-[30rem]:gap-2 mt-1 max-[30rem]:text-sm">
                       {expandedReport.resolvedImages.map((img, i) => (
-                        <CldImage key={i} src={img} alt="img" width={0} height={0} sizes="50vw" className="h-fit w-auto max-w-[45%] border border-[var(--primary-color)]/50" />
+                        <button key={i} className="primaryBtn actionBtn"><Link key={i} href={img} target="_blank" rel="noopener noreferrer">{`Image ${i + 1}`}</Link></button>
                       ))}
                     </div>
                   </div>
                 )}
-                <div className="text-lg"><span className="font-semibold">REPORTED : </span>{new Date(expandedReport.submittedAt).toLocaleDateString("en-GB")}</div>
-                {expandedReport?.resolvedAt && <div className="text-lg"><span className="font-semibold">RESOLVED : </span>{new Date(expandedReport?.resolvedAt).toLocaleDateString("en-GB")}</div>}
+                <div className="w-full flex justify-between gap-4 max-[32rem]:gap-1 text-lg max-[55rem]:text-base max-[30rem]:text-sm max-[36rem]:text-sm max-[32rem]:flex-col">
+                  <div><span className="font-semibold">REPORTED : </span>{new Date(expandedReport.submittedAt).toLocaleDateString("en-GB")}</div>
+                  {expandedReport?.resolvedAt && <div><span className="font-semibold">RESOLVED : </span>{new Date(expandedReport?.resolvedAt).toLocaleDateString("en-GB")}</div>}
+                </div>
               </>
             )}
           </div>
         </div>
-        <div className="reportsContainer grid grid-cols-4 gap-4">
+        <div className="reportsContainer grid grid-cols-4 max-xl:grid-cols-3 max-[55rem]:grid-cols-2 max-[36rem]:grid-cols-1 gap-4">
           {reports.length !== 0 ?
             <>
               {reports.map((report, i) => (
-                <div key={i} className={`card relative group font-[Roboto] flex flex-col gap-4 transition-all ease-in-out ${outerDeletingId === report._id ? "!bg-gray-900/25 !cursor-not-allowed !select-none" : ""} ${innerDeletingId === report._id ? "opacity-0 scale-95" : "opacity-100 scale-100"} ${innerDeletingId === report._id ? "duration-500" : "duration-150"} ${report.status === "resolved" ? "bg-green-500/25 hover:bg-green-500/35" : "bg-red-500/25 hover:bg-red-500/35"} rounded-xl p-4 pb-14 hover:shadow-[4px_4px_4px_1px_#00000080] hover:-translate-1`}>
+                <div key={i} className={`card max-[36rem]:w-11/12 max-[25rem]:w-full mx-auto relative group font-[Roboto] flex flex-col gap-4 max-lg:gap-2 transition-all ease-in-out ${outerDeletingId === report._id ? "!bg-gray-900/25 !cursor-not-allowed !select-none" : ""} ${innerDeletingId === report._id ? "opacity-0 scale-95 duration-500" : "opacity-100 scale-100 duration-150"} border-2 border-black/20 rounded-xl p-4 pb-14 hover:shadow-[4px_4px_4px_1px_#00000080] hover:-translate-1`}>
                   <div className="cardHeader flex justify-between gap-2">
-                    <div className="title text-xl font-semibold line-clamp-2 overflow-hidden text-ellipsis">{report.title}</div>
-                    <div className="status font-mono h-fit bg-[var(--primary-color)]/25 group-hover:bg-[var(--primary-color)]/50 transition-colors px-2 py-1 rounded-md">{report.status[0].toUpperCase() + report.status.slice(1)}</div>
+                    <div className="title text-xl max-lg:text-lg font-semibold line-clamp-2 overflow-hidden text-ellipsis">{report.title}</div>
+                    <div className={`status max-lg:text-sm max-[25rem]:text-xs max-[25rem]:mt-[3px] font-mono text-white h-fit ${report.status === "resolved" ? "bg-[#43b581]/85" : "bg-[#d6363f]/85"} transition-colors px-2 py-1 rounded-md`}>{report.status[0].toUpperCase() + report.status.slice(1)}</div>
                   </div>
-                  <div className="desc line-clamp-3 overflow-hidden text-ellipsis">{report.desc}</div>
-                  <div className="category font-mono bg-[var(--primary-color)]/25 group-hover:bg-[var(--primary-color)]/50 transition-colors px-2 py-1 rounded-md w-fit">{reportCategories.find(element => element.value === report.category)?.label}</div>
-                  <div className="cardFooter absolute bottom-2 left-0 w-full px-4 flex justify-between items-center">
+                  <div className="desc text-justify max-lg:text-sm line-clamp-3 overflow-hidden text-ellipsis">{report.desc}</div>
+                  <div className="category max-lg:text-sm max-[25rem]:text-xs font-mono bg-[var(--primary-color)]/25 group-hover:bg-[var(--primary-color)]/50 transition-colors px-2 py-1 rounded-md w-fit">{reportCategories.find(element => element.value === report.category)?.label}</div>
+                  <div className="cardFooter max-lg:text-sm absolute bottom-2 left-0 w-full px-4 flex justify-between items-center">
                     <div className="submittedAt">{new Date(report.submittedAt).toLocaleDateString("en-GB")}</div>
-                    {report.status === "pending" && <MdDelete onClick={() => handleDeleteReport(report._id.toString())} size="2rem" className="text-[var(--primary-color)]/75 hover:text-[var(--primary-color)] cursor-pointer" />}
-                    <button onClick={() => { setWaitForPopUps(true); setExpandedId(report._id); togglePageScroll(false) }} className="primaryBtn actionBtn">Expand</button>
+                    {report.status === "pending" && <MdDeleteForever onClick={() => handleDeleteReport(report._id.toString())} className="h-8 w-8 text-[var(--primary-color)]/75 hover:text-[var(--primary-color)] cursor-pointer" />}
+                    <button disabled={outerDeletingId === report._id} onClick={() => { setWaitForPopUps(true); setExpandedId(report._id); togglePageScroll(false) }} className="primaryBtn actionBtn disabled:!text-black/50">Expand</button>
                   </div>
                 </div>
               ))}
             </> :
-            <p>No reports found</p>
+            <>{!loadingMore && <p>{(searchQuery === "" && Object.entries(selectedFilters).every(([k, v]) => k === "limit" || v === "all")) ? "No reports found!" : "No matched reports!"}</p>}</>
           }
         </div>
         {loadingMore && (
-          <div className="loaderCardsContainer flex gap-4 mt-4">
-            <div style={{ height: document.querySelector(".reportsContainer")?.lastElementChild?.offsetHeight + "px" }} className="loaderCards"></div>
-            <div style={{ height: document.querySelector(".reportsContainer")?.lastElementChild?.offsetHeight + "px" }} className="loaderCards"></div>
-            <div style={{ height: document.querySelector(".reportsContainer")?.lastElementChild?.offsetHeight + "px" }} className="loaderCards"></div>
-            <div style={{ height: document.querySelector(".reportsContainer")?.lastElementChild?.offsetHeight + "px" }} className="loaderCards"></div>
+          <div className="loaderCardsContainer w-full grid grid-cols-4 max-xl:grid-cols-3 max-[55rem]:grid-cols-2 max-[36rem]:grid-cols-1 gap-4 mt-4">
+            <div className="loaderCards max-[36rem]:!w-11/12 max-[25rem]:!w-full mx-auto"></div>
+            <div className="loaderCards max-[36rem]:!w-11/12 max-[25rem]:!w-full mx-auto max-[36rem]:hidden"></div>
+            <div className="loaderCards max-[36rem]:!w-11/12 max-[25rem]:!w-full mx-auto max-[55rem]:hidden"></div>
+            <div className="loaderCards max-[36rem]:!w-11/12 max-[25rem]:!w-full mx-auto max-xl:hidden"></div>
           </div>
         )}
       </section>
-      <Link onClick={() => setIsPageLoaded(false)} href="/report" onMouseEnter={() => setIsAddHovered(false)} onMouseLeave={() => setIsAddHovered(true)} className="addReportContainer z-49 group flex gap-2 items-center transition-all border-2 border-[var(--primary-color)] bg-white w-fit rounded-full pl-2 py-2 fixed bottom-8 right-8 cursor-pointer hover:pr-6 active:scale-95">
+      <Link onClick={() => setIsPageLoaded(false)} href="/report" onMouseEnter={() => setIsAddHovered(false)} onMouseLeave={() => setIsAddHovered(true)} className="addReportContainer z-49 group flex gap-2 items-center transition-all border-2 border-[var(--primary-color)] bg-white w-fit rounded-full pl-2 py-2 fixed bottom-8 right-8 max-[30rem]:bottom-4 max-[30rem]:right-4 cursor-pointer hover:pr-6 active:scale-95">
         <BsPlusLg size={32} className={`text-[var(--primary-color)] ${isAddHovered ? "rotate-0 duration-500" : "-rotate-90 duration-300"} transition-transform ease-in-out group-active:opacity-75`} />
         <div className="text-[var(--primary-color)] group-active:opacity-75 text-xl font-semibold overflow-hidden max-w-0 group-hover:max-w-[120px] group-hover:ml-1 transition-all duration-500 whitespace-nowrap">Add report</div>
       </Link>

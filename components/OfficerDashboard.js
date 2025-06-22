@@ -7,6 +7,7 @@ import { CldImage } from "next-cloudinary"
 import { useRouter } from "next/navigation"
 import BtnLoader from "@/components/loaders/btnLoader/BtnLoader"
 import ClientOnly from "./ClientOnly"
+import Link from "next/link"
 
 const OfficerDashboard = () => {
   const { user, setIsPageLoaded, isAuthCycleOn } = useAppContext()
@@ -19,7 +20,8 @@ const OfficerDashboard = () => {
     category: "all",
     anonymous: "all",
     city: "all",
-    state: "all"
+    state: "all",
+    limit: "20"
   })
   const [expandedId, setExpandedId] = useState(null)
   const [areFiltersTriggered, setAreFiltersTriggered] = useState(false)
@@ -31,6 +33,7 @@ const OfficerDashboard = () => {
   const [skip, setSkip] = useState(0)
   const [loadingMore, setLoadingMore] = useState(false)
   const [reportsCount, setReportsCount] = useState(0)
+  const [hasMounted, setHasMounted] = useState(false)
 
   const fetchReports = async (customSkip = skip) => {
     try {
@@ -46,7 +49,7 @@ const OfficerDashboard = () => {
         state: selectedFilters.state,
         searchQuery: searchQuery.trim(),
         skip: customSkip.toString(),
-        limit: "20"
+        limit: selectedFilters.limit
       })
 
       const res = await fetch(`/api/reports?${queryParams.toString()}`)
@@ -65,7 +68,6 @@ const OfficerDashboard = () => {
       toast.error("Something went wrong!")
     } finally {
       setLoadingMore(false)
-      setIsPageLoaded(true)
       setLoadingStatus(prev => ({ ...prev, reports: true }))
     }
   }
@@ -78,6 +80,7 @@ const OfficerDashboard = () => {
   }, [user])
 
   useEffect(() => {
+    if (!hasMounted) return
     const delay = setTimeout(() => {
       setSkip(0)
       setReports([])
@@ -88,13 +91,11 @@ const OfficerDashboard = () => {
     return () => clearTimeout(delay)
   }, [searchQuery, selectedFilters])
 
+  useEffect(() => { setHasMounted(true) }, [])
+
   useEffect(() => {
     const handleScroll = () => {
-      const scrollHeight = document.documentElement.scrollHeight
-      const scrollTop = document.documentElement.scrollTop
-      const clientHeight = document.documentElement.clientHeight
-
-      if (Math.ceil(scrollTop + clientHeight) >= scrollHeight && hasMore && !loadingMore) fetchReports()
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 10 && hasMore && !loadingMore) fetchReports()
     }
 
     window.addEventListener("scroll", handleScroll)
@@ -165,6 +166,13 @@ const OfficerDashboard = () => {
       { value: "hospital_waste", label: "Medical Waste" },
       { value: "market_waste", label: "Market Waste" },
       { value: "wastewater_leak", label: "Water Leak" }
+    ],
+    limit: [
+      { value: "20", label: "20" },
+      { value: "40", label: "40" },
+      { value: "60", label: "60" },
+      { value: "80", label: "80" },
+      { value: "100", label: "100" }
     ]
   }
 
@@ -217,138 +225,135 @@ const OfficerDashboard = () => {
   const expandedReport = reports.find(r => r._id?.toString() === expandedId?.toString())
 
   return (
-    <main className="p-4 flex-1">
-      <h1 className="text-3xl font-[1000] font-[Public_sans] mb-4">DASHBOARD</h1>
+    <main className="p-4 flex-1 w-full max-w-[1792px] mx-auto">
+      <h1 className="text-3xl max-xl:text-2xl max-lg:text-xl font-[1000] font-[Public_sans] mb-2">DASHBOARD</h1>
       <section>
-        <div className="flex justify-between items-center mb-2 font-[Public_sans]">
-          <input type="text" className="border-2 border-[var(--primary-color)]/25 focus:border-[var(--primary-color)] transition-all rounded-xl p-2 w-2/5 max-[300px]:w-1/3 max-[775px]:text-sm max-[500px]:text-[12px] max-[300px]:text-[10px]" placeholder="Search reports by title..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
-          <div className="flex items-center w-fit justify-between max-[775px]:text-sm max-[500px]:text-[12px] max-[300px]:text-[10px]">
-            <button onClick={() => { if (!waitForPopUps) { setWaitForPopUps(true); setAreFiltersTriggered(true); togglePageScroll(false) } }} className="primaryBtn">Filters</button>
+        <div className="flex max-[36rem]:flex-col max-[36rem]:items-start justify-between items-center gap-4 max-[36rem]:gap-2 max-[30rem]:text-sm mb-4 font-[Public_sans]">
+          <input type="text" className="border-2 border-[var(--primary-color)]/25 focus:border-[var(--primary-color)] transition-all rounded-xl p-2 w-2/5 max-[55rem]:w-3/5 max-[36rem]:w-full" placeholder="Search reports by title..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+          <div className="flex max-[36rem]:justify-between items-center max-[36rem]:w-full gap-4">
+            <button onClick={() => { if (!waitForPopUps) { setWaitForPopUps(true); setAreFiltersTriggered(true); togglePageScroll(false) } }} className="primaryBtn h-fit max-[36rem]:!px-3 max-[36rem]:!py-2">Filters</button>
+            <div>
+              <ClientOnly>
+                <Select className="w-36 text-black" value={filterOptions.limit.find((opt) => opt.value === selectedFilters.limit)} onChange={selected => setSelectedFilters(prev => ({ ...prev, limit: selected.value }))} options={filterOptions.limit} isSearchable={false} classNamePrefix="customSelect" formatOptionLabel={(e, { context }) => context === "value" ? `${e.value} of ${reportsCount}` : e.label} />
+              </ClientOnly>
+            </div>
           </div>
         </div>
-        <div className="reportsCount mb-4"><span className="font-semibold">{(searchQuery === "" && Object.values(selectedFilters).every(v => v === "all")) ? "Total Reports : " : "Matched Reports : "}</span>{reportsCount}</div>
         <div onClick={() => (expandedId && handleOverlayClick("report-view", 300) || areFiltersTriggered && handleOverlayClick("filters", 150))} className={`overlayContainer flex justify-center items-center fixed top-0 left-0 h-dvh w-dvw ${waitForPopUps ? "z-50 bg-black/50" : "-z-20 bg-transparent"} transition-all`}>
-          <div onClick={(e) => e.stopPropagation()} className={`filter fixed font-[Public_sans] p-8 ${waitForPopUps && areFiltersTriggered ? "right-0" : "-right-96"} transition-all duration-300 z-[75] h-dvh w-96 bg-white`}>
-            <h1 className="text-xl font-semibold mb-2">FILTERS :</h1>
-            <div className="flex flex-col gap-4 w-full justify-between max-[775px]:text-sm max-[500px]:text-[12px] max-[300px]:text-[10px]">
+          <div onClick={(e) => e.stopPropagation()} className={`filter fixed font-[Public_sans] ${waitForPopUps && areFiltersTriggered ? "right-0" : "-right-96"} transition-all duration-300 z-[75] h-dvh w-96 max-md:w-80 max-[25rem]:w-4/5 p-8 max-md:p-6 max-[25rem]:p-4 bg-white`}>
+            <h1 className="text-xl max-[25rem]:text-lg font-semibold mb-2 max-[25rem]:mb-1">FILTERS :</h1>
+            <div className="flex flex-col gap-4 max-[25rem]:gap-2 w-full justify-between max-[25rem]:text-sm">
               <div>
                 <div className="pl-2 mb-1">Status :</div>
                 <ClientOnly>
-                  <Select className="w-full text-black" value={filterOptions.status.find(opt => opt.value === selectedFilters.status)} options={filterOptions.status} onChange={selected => setSelectedFilters(prev => ({ ...prev, status: selected.value }))} isSearchable={false} classNamePrefix="customSelect" placeholder="Select" />
+                  <Select className="w-full text-black" value={filterOptions.status.find(opt => opt.value === selectedFilters.status)} options={filterOptions.status} onChange={selected => setSelectedFilters(prev => ({ ...prev, status: selected.value }))} isSearchable={false} classNamePrefix="customSelect" />
                 </ClientOnly>
               </div>
               <div>
                 <div className="pl-2 mb-1">Categories :</div>
                 <ClientOnly>
-                  <Select className="w-full text-black" value={filterOptions.category.find(opt => opt.value === selectedFilters.category)} options={filterOptions.category} onChange={selected => setSelectedFilters(prev => ({ ...prev, category: selected.value }))} isSearchable={false} classNamePrefix="customSelect" placeholder="Select" />
+                  <Select className="w-full text-black" value={filterOptions.category.find(opt => opt.value === selectedFilters.category)} options={filterOptions.category} onChange={selected => setSelectedFilters(prev => ({ ...prev, category: selected.value }))} isSearchable={false} classNamePrefix="customSelect" />
                 </ClientOnly>
               </div>
               <div>
                 <div className="pl-2 mb-1">Anonymous :</div>
                 <ClientOnly>
-                  <Select className="w-full text-black" value={filterOptions.anonymous.find(opt => opt.value === selectedFilters.anonymous)} options={filterOptions.anonymous} onChange={selected => setSelectedFilters(prev => ({ ...prev, anonymous: selected.value }))} isSearchable={false} classNamePrefix="customSelect" placeholder="Select" />
+                  <Select className="w-full text-black" value={filterOptions.anonymous.find(opt => opt.value === selectedFilters.anonymous)} options={filterOptions.anonymous} onChange={selected => setSelectedFilters(prev => ({ ...prev, anonymous: selected.value }))} isSearchable={false} classNamePrefix="customSelect" />
                 </ClientOnly>
               </div>
               <div>
                 <div className="pl-2 mb-1">State :</div>
                 <ClientOnly>
-                  <Select className="w-full text-black" value={filterOptions.state.find(opt => opt.value === selectedFilters.state) || null} options={filterOptions.state} onChange={selected => setSelectedFilters(prev => ({ ...prev, state: selected.value, city: "all" }))} isSearchable={false} classNamePrefix="customSelect" placeholder="Select" />
+                  <Select className="w-full text-black" value={filterOptions.state.find(opt => opt.value === selectedFilters.state) || null} options={filterOptions.state} onChange={selected => setSelectedFilters(prev => ({ ...prev, state: selected.value, city: "all" }))} isSearchable={false} classNamePrefix="customSelect" />
                 </ClientOnly>
               </div>
               <div>
                 <div className="pl-2 mb-1">City :</div>
                 <ClientOnly>
-                  <Select className="w-full text-black" value={filterOptions.city[selectedFilters.state]?.find(opt => opt.value === selectedFilters.city) || null} options={filterOptions.city[selectedFilters.state] || []} onChange={selected => setSelectedFilters(prev => ({ ...prev, city: selected.value }))} isSearchable={false} classNamePrefix="customSelect" placeholder="Select" noOptionsMessage={() => selectedFilters?.state !== "all" ? "No cities available" : "Select a state first"} />
+                  <Select className="w-full text-black" value={filterOptions.city[selectedFilters.state]?.find(opt => opt.value === selectedFilters.city) || null} options={filterOptions.city[selectedFilters.state] || []} onChange={selected => setSelectedFilters(prev => ({ ...prev, city: selected.value }))} isSearchable={false} classNamePrefix="customSelect" noOptionsMessage={() => selectedFilters?.state !== "all" ? "No cities available" : "Select a state first"} />
                 </ClientOnly>
               </div>
               <div>
-                <button onClick={() => setSelectedFilters({ status: "all", category: "all", anonymous: "all", city: "all", state: "all" })} className="primaryBtn">Clear All</button>
+                <button onClick={() => setSelectedFilters(prev => Object.entries(prev).every(([k, v]) => k === "limit" || v === "all") ? prev : { ...prev, status: "all", category: "all", anonymous: "all", city: "all", state: "all" })} className="primaryBtn max-[25rem]:!px-3 max-[25rem]:!py-2">Clear All</button>
               </div>
             </div>
           </div>
-          <div onClick={(e) => { if (!areFiltersTriggered) { e.stopPropagation() } }} className={`flex flex-col gap-6 ${expandedReport?.images.length !== 0 ? "h-4/5" : "h-fit"} ${waitForPopUps && expandedId ? "opacity-100 scale-100" : "opacity-0 scale-50 -z-100"} transition-all duration-300 w-3/5 bg-white rounded-xl p-8 font-[Roboto] overflow-y-auto`}>
+          <div onClick={(e) => { if (!areFiltersTriggered) { e.stopPropagation() } }} className={`flex flex-col gap-6 max-[55rem]:gap-4 min-h-1/2 max-h-4/5 max-sm:max-h-11/12 w-3/5 max-2xl:w-4/5 ${waitForPopUps && expandedId ? "opacity-100 scale-100" : "opacity-0 scale-50"} transition-all duration-300 bg-white rounded-xl p-8 max-2xl:p-6 max-lg:p-4 max-[32rem]:p-3 font-[Roboto] overflow-y-auto`}>
             {expandedReport && (
               <>
-                <div className="flex justify-between">
-                  <div className="text-3xl font-bold">{expandedReport.title.toUpperCase()}</div>
-                  <div className="font-mono h-fit bg-[var(--primary-color)]/50 px-3 py-1 rounded-md">{expandedReport.status[0].toUpperCase() + expandedReport.status.slice(1)}</div>
+                <div className="flex max-[32rem]:flex-col justify-between gap-4 max-[32rem]:gap-1">
+                  <div className="text-3xl max-[55rem]:text-2xl max-md:text-xl max-[32rem]:text-lg font-bold">{expandedReport.title.toUpperCase()}</div>
+                  <div className={`font-mono max-[30rem]:text-sm text-white h-fit w-fit ${expandedReport.status === "resolved" ? "bg-[#43b581]/85" : "bg-[#d6363f]/85"} px-3 py-1 rounded-md`}>{expandedReport.status[0].toUpperCase() + expandedReport.status.slice(1)}</div>
                 </div>
-                <div className="flex justify-between items-center">
-                  <div className="font-mono h-fit bg-[var(--primary-color)]/50 px-3 py-1 rounded-md w-fit">{reportCategories.find(element => element.value === expandedReport.category)?.label}</div>
+                <div className="flex max-[32rem]:flex-col justify-between gap-4 max-[32rem]:gap-2">
+                  <div className="font-mono max-[30rem]:text-sm h-fit bg-[var(--primary-color)]/50 px-3 py-1 rounded-md w-fit">{reportCategories.find(element => element.value === expandedReport.category)?.label}</div>
                   {expandedReport.status === "pending" && (
                     <div className="loadingBtnsWrappers relative w-fit group">
-                      <button disabled={isResolveLoading} onClick={() => { setIsPageLoaded(false); setIsResolveLoading(true); router.push(`/resolve?reportId=${expandedReport._id}`) }} className="primaryBtn">Resolve</button>
+                      <button disabled={isResolveLoading} onClick={() => { setIsPageLoaded(false); setIsResolveLoading(true); router.push(`/resolve?reportId=${expandedReport._id}`) }} className="primaryBtn max-[32rem]:!px-3 max-[32rem]:!py-1 max-[30rem]:text-sm">Resolve</button>
                       {isResolveLoading && <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-all group-hover:scale-105 group-active:scale-100"><BtnLoader /></div>}
                     </div>
                   )}
                 </div>
-                <div className="text-lg"><span className="font-semibold">DESCRIPTION : </span>{expandedReport.desc}</div>
-                {expandedReport.officerResponse && <div className="text-lg"><span className="font-semibold">OFFICER'S RESPONSE : </span>{expandedReport.officerResponse}</div>}
-                <div className="text-lg">
-                  <div><span className="font-semibold">ADDRESS :</span> {expandedReport.address}</div>
-                  <div className="flex gap-2 pl-[5.8rem]">
-                    <span>{expandedReport.city.split(" ").map(value => value[0].toUpperCase() + value.slice(1)).join(" ")}</span>
-                    <span>|</span>
-                    <span>{expandedReport.state.split(" ").map(value => value[0].toUpperCase() + value.slice(1)).join(" ")}</span>
-                    <span>|</span>
-                    <span>{expandedReport.pincode}</span>
-                  </div>
-                </div>
-                <div className="text-lg font-semibold">{!expandedReport.isAnonymous ? <><span className="font-semibold">SUBMITTED BY :</span> {expandedReport.submittedBy}</> : "REPORTED ANONYMOUSLY"}</div>
-                {expandedReport.resolvedBy && <div className="text-lg font-semibold"><span className="font-semibold">RESOLVED BY :</span> {expandedReport.resolvedBy}</div>}
+                <div className="text-justify text-lg max-[55rem]:text-base max-[30rem]:text-sm"><span className="font-semibold">DESCRIPTION : </span>{expandedReport.desc}</div>
+                {expandedReport.officerResponse && <div className="text-justify text-lg max-[55rem]:text-base max-[30rem]:text-sm"><span className="font-semibold">OFFICER'S RESPONSE : </span>{expandedReport.officerResponse}</div>}
+                <div className="text-justify"><span className="font-semibold text-lg max-[55rem]:text-base max-[30rem]:text-sm">ADDRESS :</span> {`${expandedReport.address}, ${expandedReport.city.split(" ").map(value => value[0].toUpperCase() + value.slice(1)).join(" ")}, ${expandedReport.state.split(" ").map(value => value[0].toUpperCase() + value.slice(1)).join(" ")} - ${expandedReport.pincode}`}</div>
+                <div className="text-lg max-[55rem]:text-base max-[30rem]:text-sm">{!expandedReport.isAnonymous ? <><span className="font-semibold">SUBMITTED BY :</span> {expandedReport.submittedBy}</> : "REPORTED ANONYMOUSLY"}</div>
+                {expandedReport.resolvedBy && <div className="text-lg max-[55rem]:text-base max-[30rem]:text-sm"><span className="font-semibold">RESOLVED BY :</span> {expandedReport.resolvedBy}</div>}
                 {expandedReport.images.length !== 0 && (
                   <div>
-                    <div className="text-lg font-semibold">IMAGES :</div>
-                    <div className="flex flex-wrap gap-4">
+                    <div className="text-lg max-[55rem]:text-base max-[30rem]:text-sm font-semibold">IMAGES :</div>
+                    <div className="imgLinks flex flex-wrap gap-4 max-[30rem]:gap-2 mt-1 max-[30rem]:text-sm">
                       {expandedReport.images.map((img, i) => (
-                        <CldImage key={i} src={img} alt="img" width={0} height={0} sizes="50vw" className="h-fit w-auto max-w-[45%] border border-[var(--primary-color)]/50" />
+                        <button key={i} className="primaryBtn actionBtn"><Link key={i} href={img} target="_blank" rel="noopener noreferrer">{`Image ${i + 1}`}</Link></button>
                       ))}
                     </div>
                   </div>
                 )}
                 {expandedReport.resolvedImages.length !== 0 && (
                   <div>
-                    <div className="text-lg font-semibold">RESOLVED IMAGES :</div>
-                    <div className="flex flex-wrap gap-4">
+                    <div className="text-lg max-[55rem]:text-base max-[30rem]:text-sm font-semibold">RESOLVED IMAGES :</div>
+                    <div className="imgLinks flex flex-wrap gap-4 max-[30rem]:gap-2 mt-1 max-[30rem]:text-sm">
                       {expandedReport.resolvedImages.map((img, i) => (
-                        <CldImage key={i} src={img} alt="img" width={0} height={0} sizes="50vw" className="h-fit w-auto max-w-[45%] border border-[var(--primary-color)]/50" />
+                        <button key={i} className="primaryBtn actionBtn"><Link key={i} href={img} target="_blank" rel="noopener noreferrer">{`Image ${i + 1}`}</Link></button>
                       ))}
                     </div>
                   </div>
                 )}
-                <div className="text-lg"><span className="font-semibold">REPORTED : </span>{new Date(expandedReport.submittedAt).toLocaleDateString("en-GB")}</div>
-                {expandedReport?.resolvedAt && <div className="text-lg"><span className="font-semibold">RESOLVED : </span>{new Date(expandedReport?.resolvedAt).toLocaleDateString("en-GB")}</div>}
+                <div className="w-full flex justify-between gap-4 max-[32rem]:gap-1 text-lg max-[55rem]:text-base max-[30rem]:text-sm max-[36rem]:text-sm max-[32rem]:flex-col">
+                  <div><span className="font-semibold">REPORTED : </span>{new Date(expandedReport.submittedAt).toLocaleDateString("en-GB")}</div>
+                  {expandedReport?.resolvedAt && <div><span className="font-semibold">RESOLVED : </span>{new Date(expandedReport?.resolvedAt).toLocaleDateString("en-GB")}</div>}
+                </div>
               </>
             )}
           </div>
         </div>
-        <div className="reportsContainer grid grid-cols-4 gap-4">
+        <div className="reportsContainer grid grid-cols-4 max-xl:grid-cols-3 max-[55rem]:grid-cols-2 max-[36rem]:grid-cols-1 gap-4">
           {reports.length !== 0 ?
             <>
               {reports.map((report, i) => (
-                <div key={i} className={`card relative group font-[Roboto] flex flex-col gap-4 transition-all ease-in-out ${report.status === "resolved" ? "bg-green-500/25 hover:bg-green-500/35" : "bg-red-500/25 hover:bg-red-500/35"} rounded-xl p-4 pb-14 hover:shadow-[4px_4px_4px_1px_#00000080] hover:-translate-1`}>
+                <div key={i} className={`card max-[36rem]:w-11/12 max-[25rem]:w-full mx-auto relative group font-[Roboto] flex flex-col gap-4 max-lg:gap-2 transition-all ease-in-out border-2 border-black/20 rounded-xl p-4 pb-14 hover:shadow-[4px_4px_4px_1px_#00000080] hover:-translate-1`}>
                   <div className="cardHeader flex justify-between gap-2">
                     <div className="title text-xl font-semibold line-clamp-2 overflow-hidden text-ellipsis">{report.title}</div>
-                    <div className="status font-mono h-fit bg-[var(--primary-color)]/25 group-hover:bg-[var(--primary-color)]/50 transition-colors px-2 py-1 rounded-md">{report.status[0].toUpperCase() + report.status.slice(1)}</div>
+                    <div className={`status max-lg:text-sm max-[25rem]:text-xs max-[25rem]:mt-[3px] font-mono text-white h-fit ${report.status === "resolved" ? "bg-[#43b581]/85" : "bg-[#d6363f]/85"} transition-colors px-2 py-1 rounded-md`}>{report.status[0].toUpperCase() + report.status.slice(1)}</div>
                   </div>
-                  <div className="desc line-clamp-3 overflow-hidden text-ellipsis">{report.desc}</div>
-                  <div className="category font-mono bg-[var(--primary-color)]/25 group-hover:bg-[var(--primary-color)]/50 transition-colors px-2 py-1 rounded-md w-fit">{reportCategories.find(element => element.value === report.category)?.label}</div>
-                  <div className="cardFooter absolute bottom-2 left-0 w-full px-4 flex justify-between items-center">
+                  <div className="desc text-justify max-lg:text-sm line-clamp-3 overflow-hidden text-ellipsis">{report.desc}</div>
+                  <div className="category max-lg:text-sm max-[25rem]:text-xs font-mono bg-[var(--primary-color)]/25 group-hover:bg-[var(--primary-color)]/50 transition-colors px-2 py-1 rounded-md w-fit">{reportCategories.find(element => element.value === report.category)?.label}</div>
+                  <div className="cardFooter max-lg:text-sm absolute bottom-2 left-0 w-full px-4 flex justify-between items-center">
                     <div className="submittedAt">{new Date(report.submittedAt).toLocaleDateString("en-GB")}</div>
                     <button onClick={() => { if (!waitForPopUps) { setWaitForPopUps(true); setExpandedId(report._id); togglePageScroll(false) } }} className="primaryBtn actionBtn">Expand</button>
                   </div>
                 </div>
               ))}
             </> :
-            <p>No reports found</p>
+            <>{!loadingMore && <p>{(searchQuery === "" && Object.entries(selectedFilters).every(([k, v]) => k === "limit" || v === "all")) ? "No reports found!" : "No matched reports!"}</p>}</>
           }
         </div>
         {loadingMore && (
-          <div className="loaderCardsContainer flex gap-4 mt-4">
-            <div style={{ height: document.querySelector(".reportsContainer")?.lastElementChild?.offsetHeight + "px" }} className="loaderCards"></div>
-            <div style={{ height: document.querySelector(".reportsContainer")?.lastElementChild?.offsetHeight + "px" }} className="loaderCards"></div>
-            <div style={{ height: document.querySelector(".reportsContainer")?.lastElementChild?.offsetHeight + "px" }} className="loaderCards"></div>
-            <div style={{ height: document.querySelector(".reportsContainer")?.lastElementChild?.offsetHeight + "px" }} className="loaderCards"></div>
+          <div className="loaderCardsContainer w-full grid grid-cols-4 max-xl:grid-cols-3 max-[55rem]:grid-cols-2 max-[36rem]:grid-cols-1 gap-4 mt-4">
+            <div className="loaderCards max-[36rem]:!w-11/12 max-[25rem]:!w-full mx-auto"></div>
+            <div className="loaderCards max-[36rem]:!w-11/12 max-[25rem]:!w-full mx-auto max-[36rem]:hidden"></div>
+            <div className="loaderCards max-[36rem]:!w-11/12 max-[25rem]:!w-full mx-auto max-[55rem]:hidden"></div>
+            <div className="loaderCards max-[36rem]:!w-11/12 max-[25rem]:!w-full mx-auto max-xl:hidden"></div>
           </div>
         )}
       </section>
