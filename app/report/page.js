@@ -209,9 +209,9 @@ const Report = () => {
   )
 
   return (
-    <main className="p-8 flex-1">
-      <div className="loginFormContainer mx-auto w-1/3 bg-black/5 p-4 flex flex-col gap-4 rounded-md shadow-lg">
-        <h1 className="text-2xl font-[1000] w-full text-center">REPORT</h1>
+    <main className="p-8 max-sm:p-6 font-[Public_sans] flex-1">
+      <div className="loginFormContainer mx-auto w-xl max-lg:w-lg max-sm:w-md max-[35rem]:w-full bg-black/5 p-4 flex flex-col gap-4 rounded-md shadow-lg">
+        <h1 className="text-2xl max-sm:text-xl font-[1000] w-full text-center">REPORT</h1>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="inputFieldContainer flex flex-col">
             <label className="mb-2 ml-4" htmlFor="title">Title <span className="text-red-500">*</span> :</label>
@@ -302,7 +302,7 @@ const Report = () => {
           </div>
 
           <div className="checkboxContainer w-full">
-            <label className="border-2 cursor-pointer bg-white border-[var(--primary-color)]/25 focus:border-[var(--primary-color)] transition-all rounded-xl w-full p-2 cur-p flex items-center gap-2">
+            <label className="border-2 cursor-pointer bg-white border-[var(--primary-color)]/25 focus:border-[var(--primary-color)] transition-all rounded-xl !w-full p-2 cur-p flex items-center gap-2">
               <input className={styles.customCheckbox2} type="checkbox" {...register("isAnonymous")} />
               Report anonymously
             </label>

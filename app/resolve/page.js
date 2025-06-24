@@ -146,11 +146,11 @@ const Resolve = () => {
   )
 
   return (
-    <main className="p-8 flex-1">
-      <div className="loginFormContainer mx-auto w-1/3 bg-black/5 p-4 flex flex-col gap-4 rounded-md shadow-lg">
-        <h1 className="text-2xl font-[1000] w-full text-center">RESOLVE</h1>
-        <p><span className="font-semibold">TITLE : </span>{report?.title}</p>
-        <p><span className="font-semibold">DESCRIPTION : </span>{report?.desc}</p>
+    <main className="p-8 max-sm:p-6 font-[Public_sans] flex-1">
+      <div className="loginFormContainer mx-auto w-xl max-lg:w-lg max-sm:w-md max-[35rem]:w-full bg-black/5 p-4 flex flex-col gap-4 rounded-md shadow-lg">
+        <h1 className="text-2xl max-sm:text-xl font-[1000] w-full text-center">RESOLVE</h1>
+        <p className="text-justify"><span className="font-semibold">TITLE : </span>{report?.title}</p>
+        <p className="text-justify"><span className="font-semibold">DESCRIPTION : </span>{report?.desc}</p>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="inputFieldContainer flex flex-col">
             <label className="mb-2 ml-4" htmlFor="officerResponse">Response <span className="text-red-500">*</span> :</label>
