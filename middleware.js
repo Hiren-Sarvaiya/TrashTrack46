@@ -7,7 +7,7 @@ export async function middleware(req) {
 
   const authPages = ["/login", "/register"]
   const protectedApis = ["/api/report", "/api/reports"]
-  const protectedPages = ["/dashboard", "/profile"]
+  const protectedPages = ["/dashboard", "/profile", "/insights"]
 
   const isAuthPage = authPages.some(p => path.startsWith(p))
   const isProtectedApi = protectedApis.some(p => path.startsWith(p))
@@ -40,6 +40,7 @@ export const config = {
   matcher: [
     "/dashboard/:path*",
     "/profile/:path*",
+    "/insights",
     "/login",
     "/register",
     "/api/report",

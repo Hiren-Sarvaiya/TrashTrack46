@@ -6,8 +6,9 @@ export async function GET(req) {
     const { searchParams } = new URL(req.url)
     const skip = parseInt(searchParams.get("skip") || "0")
     const limit = parseInt(searchParams.get("limit") || "20")
+    const view = searchParams.get("view")
 
-    if (searchParams.get("view") === "officer-dashboard") {
+    if (view === "officer-dashboard") {
       const { status = "all", category = "all", anonymous = "all", city = "all", state = "all", searchQuery = "", skip = "0", limit = "20" } = Object.fromEntries(searchParams.entries())
       const skipNum = parseInt(skip)
       const limitNum = parseInt(limit)
@@ -33,7 +34,7 @@ export async function GET(req) {
       const total = await Report.countDocuments(query)
 
       return NextResponse.json({ success: true, reports, total }, { status: 200 })
-    } else {
+    } else if (view === "citizen-dashboard") {
       const submittedBy = searchParams.get("submittedBy")
       if (!submittedBy) return NextResponse.json({ success: false, message: "SubmittedBy is required" }, { status: 400 })
 
@@ -53,6 +54,9 @@ export async function GET(req) {
       }
 
       return NextResponse.json({ success: true, reports: matchedReports.slice(skip, skip + limit), total: matchedReports.length }, { status: 200 })
+    } else if (view === "insights") {
+      const allReports = await Report.find().sort({ submittedAt: -1 })
+      return NextResponse.json({ success: true, reports: allReports }, { status: 200 })
     }
   } catch (err) {
     console.log(err)
