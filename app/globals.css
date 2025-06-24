@@ -128,3 +128,18 @@ body.react-confirm-alert-body-element {
     left: -100%;
   }
 }
+
+@media (max-width: 480px) {
+  .Toastify__toast-container {
+    width: 75% !important;
+    top: 1rem !important;
+    left: calc(25% - 1rem) !important;
+    right: 1rem !important;
+    gap: 0.5rem !important;
+  }
+
+  .Toastify__toast {
+    border-radius: 0.5rem !important;
+    padding: 0.75rem 1rem !important;
+  }
+}
