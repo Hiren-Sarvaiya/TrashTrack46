@@ -65,7 +65,7 @@ const Header = () => {
           {isLoggedIn ?
             <>
               <Link onClick={(e) => handleLinkClick("/dashboard", e)} className={styles.navLinks} href="/dashboard">DASHBOARD</Link>
-              {user && user.role && user.role === "officer" && <Link onClick={(e) => handleLinkClick("/insights", e)} className={styles.navLinks} href="/insights">INSIGHTS</Link>}
+              {user?.role === "officer" && <Link onClick={(e) => handleLinkClick("/insights", e)} className={styles.navLinks} href="/insights">INSIGHTS</Link>}
               <button onClick={handleLogout} className={styles.navLinks}>LOG OUT</button>
             </> :
             <>
