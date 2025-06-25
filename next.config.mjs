@@ -1,7 +1,7 @@
-/** @type {import('next').NextConfig} */
+/** @type {import("next").NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['res.cloudinary.com'],
+    domains: ["res.cloudinary.com", "images.unsplash.com"],
   },
   experimental: {
     serverActions: true,
@@ -10,7 +10,7 @@ const nextConfig = {
     config.module.rules.push({
       test: /\.svg$/i,
       issuer: /\.[jt]sx?$/,
-      use: ['@svgr/webpack'],
+      use: ["@svgr/webpack"],
     })
     return config
   },
