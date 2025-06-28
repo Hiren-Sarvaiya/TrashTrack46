@@ -9,6 +9,8 @@ import LeafletMap from "@/components/MapPicker"
 import styles from "./report.module.css"
 import BtnLoader from "@/components/loaders/btnLoader/BtnLoader"
 import ClientOnly from "@/components/ClientOnly"
+import reportCategories from "@/assets/data/reportCategories.json"
+import citiesData from "@/assets/data/citiesData.json"
 
 const Report = () => {
   const { register, handleSubmit, watch, control, setValue, formState: { errors } } = useForm()
@@ -29,9 +31,6 @@ const Report = () => {
   useEffect(() => {
     const fetchCities = async () => {
       try {
-        const res = await fetch("/assets/data/citiesData.json")
-        const citiesData = await res.json()
-
         const tempStates = Array.from(new Set(citiesData.map(city => city.state)))
           .sort((a, b) => a.localeCompare(b))
           .map(state => ({
@@ -89,6 +88,7 @@ const Report = () => {
 
   const onSubmit = async (data) => {
     try {
+      document.activeElement.blur()
       setIsSubmittingData(true)
       const imageFiles = Object.entries(images).reduce((acc, [key, value]) => {
         if (value !== "No file chosen" && value instanceof File) { acc[key] = value }
@@ -148,20 +148,6 @@ const Report = () => {
       setIsSubmittingData(false)
     }
   }
-
-  const reportCategories = [
-    { value: "road_dump", label: "Garbage dumped on road" },
-    { value: "unpicked_garbage", label: "Garbage not picked up for days" },
-    { value: "overflowing_dustbin", label: "Overflowing public dustbin" },
-    { value: "near_water_body", label: "Garbage near water body" },
-    { value: "dead_animal", label: "Dead animal not removed" },
-    { value: "illegal_dumping", label: "Illegal dumping of waste" },
-    { value: "industrial_waste", label: "Industrial or chemical waste" },
-    { value: "open_dumpyard", label: "Open or unregulated dump yard" },
-    { value: "hospital_waste", label: "Hazardous medical waste" },
-    { value: "market_waste", label: "Waste around market/vendor zones" },
-    { value: "wastewater_leak", label: "Leakage of wastewater or sewage" }
-  ]
 
   useEffect(() => {
     register("latitude")

@@ -26,7 +26,7 @@ const NotFound = () => {
 
   return (
     <main className="flex-1 p-4 flex max-md:flex-col items-center justify-center gap-16 max-lg:gap-8 max-md:gap-6">
-      <div className="left relative font-[Public_sans] w-1/3 max-xl:w-2/5 max-lg:w-[45%] max-md:w-3/5 max-sm:w-4/5 max-[30rem]:w-full pt-24 max-md:pt-20 pb-12 pl-8 flex flex-col items-end text-gray-600 overflow-hidden shadow-lg">
+      <div className="left relative font-[Public_sans] w-1/3 max-xl:w-2/5 max-lg:w-[45%] max-md:w-3/5 max-sm:w-4/5 max-[30rem]:w-full pt-24 max-md:pt-20 pb-12 pl-8 flex flex-col items-end text-gray-600 overflow-hidden shadow-lg select-none">
         <div className="bg absolute top-0 h-full w-full">
           <BsCloudSlashFill className="absolute top-2 right-2 h-32 w-32 max-lg:h-28 max-lg:w-28 max-md:h-24 max-md:w-24 text-[var(--primary-color)]/50" />
           <div className="absolute -left-24 -bottom-12 max-md:-bottom-16 rounded-full h-48 aspect-square max-lg:h-44 bg-[var(--primary-color)]/50"></div>

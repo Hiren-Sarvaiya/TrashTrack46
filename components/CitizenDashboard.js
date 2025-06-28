@@ -1,7 +1,7 @@
 "use client"
 import { useAppContext } from "@/context/AppContext"
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useMemo, useRef } from "react"
 import Select from "react-select"
 import { BsPlusLg } from "react-icons/bs"
 import { toast } from "react-toastify"
@@ -9,6 +9,10 @@ import { MdDeleteForever } from "react-icons/md"
 import Swal from "sweetalert2"
 import withReactContent from "sweetalert2-react-content"
 import ClientOnly from "./ClientOnly"
+import reportCategories from "@/assets/data/reportCategories.json"
+import togglePageScroll from "@/lib/togglePageScroll"
+import { IoClose } from "react-icons/io5"
+import { IoArrowUpOutline } from "react-icons/io5"
 
 const CitizenDashboard = () => {
   const { user, setIsPageLoaded, isAuthCycleOn } = useAppContext()
@@ -29,6 +33,9 @@ const CitizenDashboard = () => {
   const [loadingMore, setLoadingMore] = useState(false)
   const [reportsCount, setReportsCount] = useState(0)
   const [hasMounted, setHasMounted] = useState(false)
+  const searchInput = useRef()
+  const filtersContainer = useRef()
+  const [isFiltersContainerVisible, setIsFiltersContainerVisible] = useState(true)
 
   const fetchReports = async (customSkip = skip) => {
     try {
@@ -63,6 +70,8 @@ const CitizenDashboard = () => {
     }
   }
 
+  useEffect(() => { setHasMounted(true) }, [])
+
   useEffect(() => {
     setSkip(0)
     setReports([])
@@ -82,8 +91,6 @@ const CitizenDashboard = () => {
     return () => clearTimeout(delay)
   }, [searchQuery, selectedFilters])
 
-  useEffect(() => { setHasMounted(true) }, [])
-
   useEffect(() => {
     const handleScroll = () => {
       if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 10 && hasMore && !loadingMore) fetchReports()
@@ -93,7 +100,28 @@ const CitizenDashboard = () => {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [hasMore, loadingMore])
 
-  const filterOptions = {
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === "Escape") handleOverlayClick()
+    }
+
+    window.addEventListener("keydown", handleEsc)
+    return () => window.removeEventListener("keydown", handleEsc)
+  }, [expandedId])
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsFiltersContainerVisible(entry.isIntersecting),
+      { threshold: 1.0 }
+    )
+
+    const current = filtersContainer.current
+    if (current) observer.observe(current)
+
+    return () => { if (current) observer.unobserve(current) }
+  }, [])
+
+  const filterOptions = useMemo(() => ({
     status: [
       { value: "all", label: "All" },
       { value: "pending", label: "Pending" },
@@ -106,34 +134,23 @@ const CitizenDashboard = () => {
       { value: "80", label: "80" },
       { value: "100", label: "100" }
     ]
-  }
-
-  const reportCategories = [
-    { value: "road_dump", label: "Garbage dumped on road" },
-    { value: "unpicked_garbage", label: "Garbage not picked up for days" },
-    { value: "overflowing_dustbin", label: "Overflowing public dustbin" },
-    { value: "near_water_body", label: "Garbage near water body" },
-    { value: "dead_animal", label: "Dead animal not removed" },
-    { value: "illegal_dumping", label: "Illegal dumping of waste" },
-    { value: "industrial_waste", label: "Industrial or chemical waste" },
-    { value: "open_dumpyard", label: "Open or unregulated dump yard" },
-    { value: "hospital_waste", label: "Hazardous medical waste" },
-    { value: "market_waste", label: "Waste around market/vendor zones" },
-    { value: "wastewater_leak", label: "Leakage of wastewater or sewage" }
-  ]
+  }), [])
 
   const handleDeleteReport = async (id) => {
-    const result = await MySwal.fire({
+    const confirmation = await MySwal.fire({
       title: "DELETE REPORT",
-      text: "Are you sure you want to delete this report? You can't undo this.",
+      text: "Are you sure you want to permanently delete this report?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes",
       cancelButtonText: "No",
-      reverseButtons: true,
+      customClass: {
+        confirmButton: "primaryBtn !px-6 hover:!bg-[var(--primary-color)] active:!bg-[var(--primary-color)] focus:!bg-[var(--primary-color)] focus:!outline-none focus:!ring-2 focus:!ring-[var(--primary-color)]/50",
+        cancelButton: "primaryBtn !px-6 !bg-transparent !border-2 !border-[var(--primary-color)] !text-[var(--primary-color)] focus:!outline-none focus:!ring-2 focus:!ring-[var(--primary-color)]/50"
+      }
     })
 
-    if (!result.isConfirmed) {
+    if (!confirmation.isConfirmed) {
       setOuterDeletingId(null)
       return
     }
@@ -161,22 +178,6 @@ const CitizenDashboard = () => {
     }
   }
 
-  const togglePageScroll = (allowScroll) => {
-    const html = document.documentElement
-    const body = document.body
-    if (allowScroll) {
-      html.style.overflow = ""
-      body.style.overflow = ""
-      html.style.height = ""
-      body.style.height = ""
-    } else {
-      html.style.overflow = "hidden"
-      body.style.overflow = "hidden"
-      html.style.height = "100%"
-      body.style.height = "100%"
-    }
-  }
-
   const handleOverlayClick = () => {
     setExpandedId(null)
     setTimeout(() => {
@@ -191,8 +192,11 @@ const CitizenDashboard = () => {
     <main className="p-4 flex-1 w-full max-w-[1792px] mx-auto">
       <h1 className="text-3xl max-xl:text-2xl max-lg:text-xl font-[1000] font-[Public_sans] mb-2">MY REPORTS</h1>
       <section>
-        <div className="flex max-[36rem]:flex-col max-[36rem]:items-start justify-between items-center gap-4 max-[36rem]:gap-2 max-[30rem]:text-sm mb-4">
-          <input type="text" className="border-2 border-[var(--primary-color)]/25 focus:border-[var(--primary-color)] transition-all rounded-xl p-2 w-2/5 max-[55rem]:w-3/5 max-[36rem]:w-full" placeholder="Search reports by title..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+        <div ref={filtersContainer} className="flex max-[36rem]:flex-col max-[36rem]:items-start justify-between items-center gap-4 max-[36rem]:gap-2 max-[30rem]:text-sm mb-4">
+          <div className="relative group w-2/5 max-[55rem]:w-3/5 max-[36rem]:w-full border-2 border-[var(--primary-color)]/25 focus-within:border-[var(--primary-color)] transition-all rounded-xl p-2">
+            <input ref={searchInput} type="text" className="w-[calc(100%-36px)]" placeholder="Search reports by title..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+            <IoClose onClick={() => { setSearchQuery(""); searchInput.current.focus() }} className={`absolute ${searchQuery === "" ? "h-0 w-0" : "h-8 w-8"} top-1/2 -translate-y-1/2 right-2 text-[var(--primary-color)]/25 hover:text-[var(--primary-color)] active:text-[var(--primary-color)]/25 group-focus-within:text-[var(--primary-color)] transition-all cursor-pointer`} />
+          </div>
           <div className="flex max-[36rem]:justify-between max-[36rem]:w-full gap-4">
             <div>
               <ClientOnly>
@@ -212,7 +216,7 @@ const CitizenDashboard = () => {
               <>
                 <div className="flex max-[32rem]:flex-col justify-between gap-4 max-[32rem]:gap-1">
                   <div className="text-3xl max-[55rem]:text-2xl max-md:text-xl max-[32rem]:text-lg font-bold">{expandedReport.title.toUpperCase()}</div>
-                  <div className={`font-mono max-[30rem]:text-sm text-white h-fit w-fit ${expandedReport.status === "resolved" ? "bg-[#43b581]/85" : "bg-[#d6363f]/85"} px-3 py-1 rounded-md`}>{expandedReport.status[0].toUpperCase() + expandedReport.status.slice(1)}</div>
+                  <div className={`font-mono max-[30rem]:text-sm text-white h-fit w-fit ${expandedReport.status === "resolved" ? "bg-[#43b581]/75" : "bg-[#d6363f]/75"} px-3 py-1 rounded-md`}>{expandedReport.status[0].toUpperCase() + expandedReport.status.slice(1)}</div>
                 </div>
                 <div className="font-mono max-[30rem]:text-sm h-fit bg-[var(--primary-color)]/50 px-3 py-1 rounded-md w-fit">{reportCategories.find(element => element.value === expandedReport.category)?.label}</div>
                 <div className="text-justify text-lg max-[55rem]:text-base max-[30rem]:text-sm"><span className="font-semibold">DESCRIPTION : </span>{expandedReport.desc}</div>
@@ -254,13 +258,13 @@ const CitizenDashboard = () => {
                 <div key={i} className={`card max-[36rem]:w-11/12 max-[25rem]:w-full mx-auto relative group font-[Roboto] flex flex-col gap-4 max-lg:gap-2 transition-all ease-in-out ${outerDeletingId === report._id ? "!bg-gray-900/25 !cursor-not-allowed !select-none" : ""} ${innerDeletingId === report._id ? "opacity-0 scale-95 duration-500" : "opacity-100 scale-100 duration-150"} border-2 border-black/20 rounded-xl p-4 pb-14 hover:shadow-[4px_4px_4px_1px_#00000080] hover:-translate-1`}>
                   <div className="cardHeader flex justify-between gap-2">
                     <div className="title text-xl max-lg:text-lg font-semibold line-clamp-2 overflow-hidden text-ellipsis">{report.title}</div>
-                    <div className={`status max-lg:text-sm max-[25rem]:text-xs max-[25rem]:mt-[3px] font-mono text-white h-fit ${report.status === "resolved" ? "bg-[#43b581]/85" : "bg-[#d6363f]/85"} transition-colors px-2 py-1 rounded-md`}>{report.status[0].toUpperCase() + report.status.slice(1)}</div>
+                    <div className={`status max-lg:text-sm max-[25rem]:text-xs max-[25rem]:mt-[3px] font-mono text-white h-fit ${report.status === "resolved" ? "bg-[#43b581]/75" : "bg-[#d6363f]/75"} transition-colors px-2 py-1 rounded-md`}>{report.status[0].toUpperCase() + report.status.slice(1)}</div>
                   </div>
                   <div className="desc text-justify max-lg:text-sm line-clamp-3 overflow-hidden text-ellipsis">{report.desc}</div>
                   <div className="category max-lg:text-sm max-[25rem]:text-xs font-mono bg-[var(--primary-color)]/25 group-hover:bg-[var(--primary-color)]/50 transition-colors px-2 py-1 rounded-md w-fit">{reportCategories.find(element => element.value === report.category)?.label}</div>
                   <div className="cardFooter max-lg:text-sm absolute bottom-2 left-0 w-full px-4 flex justify-between items-center">
                     <div className="submittedAt">{new Date(report.submittedAt).toLocaleDateString("en-GB")}</div>
-                    {report.status === "pending" && <MdDeleteForever onClick={() => handleDeleteReport(report._id.toString())} className="h-8 w-8 text-[var(--primary-color)]/75 hover:text-[var(--primary-color)] cursor-pointer" />}
+                    {report.status === "pending" && <MdDeleteForever onClick={() => handleDeleteReport(report._id.toString())} className={`h-8 w-8 text-[var(--primary-color)]/75 hover:text-[var(--primary-color)] cursor-pointer ${outerDeletingId === report._id ? "pointer-events-none text-black/25" : ""}`} />}
                     <button disabled={outerDeletingId === report._id} onClick={() => { setWaitForPopUps(true); setExpandedId(report._id); togglePageScroll(false) }} className="primaryBtn actionBtn disabled:!text-black/50">Expand</button>
                   </div>
                 </div>
@@ -278,6 +282,17 @@ const CitizenDashboard = () => {
           </div>
         )}
       </section>
+      <div
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        className={`fixed bottom-8 max-[30rem]:bottom-4 ${isFiltersContainerVisible ? "-left-14" : "left-8 max-[30rem]:left-4"} bg-white p-2 rounded-full border-2 border-[var(--primary-color)] cursor-pointer z-49`}
+        style={{ transition: "left 300ms ease, transform 150ms ease", willChange: "transform" }}
+        onMouseEnter={e => e.currentTarget.style.transform = "scale(1.05)"}
+        onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
+        onMouseDown={e => e.currentTarget.style.transform = "scale(0.95)"}
+        onMouseUp={e => e.currentTarget.style.transform = "scale(1.05)"}
+      >
+        <IoArrowUpOutline size={32} className="text-[var(--primary-color)]" />
+      </div>
       <Link onClick={() => setIsPageLoaded(false)} href="/report" onMouseEnter={() => setIsAddHovered(false)} onMouseLeave={() => setIsAddHovered(true)} className="addReportContainer z-49 group flex gap-2 items-center transition-all border-2 border-[var(--primary-color)] bg-white w-fit rounded-full pl-2 py-2 fixed bottom-8 right-8 max-[30rem]:bottom-4 max-[30rem]:right-4 cursor-pointer hover:pr-6 active:scale-95">
         <BsPlusLg size={32} className={`text-[var(--primary-color)] ${isAddHovered ? "rotate-0 duration-500" : "-rotate-90 duration-300"} transition-transform ease-in-out group-active:opacity-75`} />
         <div className="text-[var(--primary-color)] group-active:opacity-75 text-xl font-semibold overflow-hidden max-w-0 group-hover:max-w-[120px] group-hover:ml-1 transition-all duration-500 whitespace-nowrap">Add report</div>

@@ -6,11 +6,11 @@ import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { useAppContext } from "@/context/AppContext"
 import BtnLoader from "@/components/loaders/btnLoader/BtnLoader"
+import reportCategories from "@/assets/data/reportCategories.json"
 
 const Resolve = () => {
   const { register, handleSubmit, setValue, formState: { errors } } = useForm()
-  const searchParams = useSearchParams()
-  const reportId = searchParams.get("reportId")
+  const reportId = useSearchParams().get("reportId")
   const [report, setReport] = useState(null)
   const [images, setImages] = useState({
     image1: null,
@@ -62,6 +62,7 @@ const Resolve = () => {
 
   const onSubmit = async (data) => {
     try {
+      document.activeElement.blur()
       setIsSubmittingData(true)
       const imageFiles = Object.entries(images).reduce((acc, [key, value]) => {
         if (value !== "No file chosen" && value instanceof File) acc[key] = value
@@ -151,6 +152,7 @@ const Resolve = () => {
         <h1 className="text-2xl max-sm:text-xl font-[1000] w-full text-center">RESOLVE</h1>
         <p className="text-justify"><span className="font-semibold">TITLE : </span>{report?.title}</p>
         <p className="text-justify"><span className="font-semibold">DESCRIPTION : </span>{report?.desc}</p>
+        <div className="font-mono max-[30rem]:text-sm h-fit bg-[var(--primary-color)]/50 px-3 py-1 rounded-md w-fit">{reportCategories.find(element => element.value === report?.category)?.label}</div>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="inputFieldContainer flex flex-col">
             <label className="mb-2 ml-4" htmlFor="officerResponse">Response <span className="text-red-500">*</span> :</label>

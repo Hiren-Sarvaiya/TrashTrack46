@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation"
 import { useAppContext } from "@/context/AppContext"
 import BtnLoader from "@/components/loaders/btnLoader/BtnLoader"
 import ClientOnly from "@/components/ClientOnly"
+import citiesData from "@/assets/data/citiesData.json"
 
 const Register = () => {
   const { register, handleSubmit, watch, control, formState: { errors } } = useForm()
@@ -23,9 +24,6 @@ const Register = () => {
   useEffect(() => {
     const fetchCities = async () => {
       try {
-        const res = await fetch("/assets/data/citiesData.json")
-        const citiesData = await res.json()
-
         const tempStates = Array.from(new Set(citiesData.map(city => city.state)))
           .sort((a, b) => a.localeCompare(b))
           .map(state => ({
@@ -62,6 +60,7 @@ const Register = () => {
 
   const onSubmit = async (data) => {
     try {
+      document.activeElement.blur()
       setIsSubmittingData(true)
       const formattedData = {
         name: data.name,
@@ -108,7 +107,7 @@ const Register = () => {
   ]
 
   return (
-    <main className="p-8 font-[Public_sans] flex-1">
+    <main className="p-8 max-sm:p-6 font-[Public_sans] flex-1">
       <section>
         <div className="loginFormContainer mx-auto w-xl max-lg:w-lg max-sm:w-md max-[35rem]:w-full bg-black/5 p-4 flex flex-col gap-4 rounded-md shadow-lg">
           <h1 className="text-2xl max-sm:text-xl font-[1000] w-full text-center">REGISTER</h1>

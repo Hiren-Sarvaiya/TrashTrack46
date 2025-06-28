@@ -55,7 +55,7 @@ const Header = () => {
         <div className="logoContainer">
           <Link onClick={(e) => handleLinkClick("/", e)} href="/">
             <div className="relative cursor-pointer h-16 w-64 max-[824px]:w-48">
-              <Image src="/assets/images/logo2.png" alt="logo" fill style={{ objectFit: "contain" }} />
+              <Image src="/assets/images/logo2.png" alt="logo" fill style={{ objectFit: "contain" }} priority />
             </div>
           </Link>
         </div>

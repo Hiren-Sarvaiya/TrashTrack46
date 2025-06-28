@@ -36,7 +36,7 @@ const Contact = () => {
   }, [])
 
   const onSubmit = (data) => {
-    console.log(data)
+    document.activeElement.blur()
     reset()
   }
 

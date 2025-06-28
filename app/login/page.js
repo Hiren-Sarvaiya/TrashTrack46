@@ -31,6 +31,7 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
+      document.activeElement.blur()
       setIsSubmittingData(true)
       const formattedData = {
         email: data.email,
@@ -72,7 +73,7 @@ const Login = () => {
   ]
 
   return (
-    <main className="p-8 font-[Public_sans] flex-1">
+    <main className="p-8 max-sm:p-6 font-[Public_sans] flex-1">
       <section>
         <div className="loginFormContainer mx-auto w-xl max-lg:w-lg max-sm:w-md max-[35rem]:w-full bg-black/5 p-4 flex flex-col gap-4 rounded-md shadow-lg">
           <h1 className="text-2xl max-sm:text-xl font-[1000] w-full text-center">LOGIN</h1>
@@ -107,8 +108,8 @@ const Login = () => {
               <div className="relative">
                 <input disabled={loginMethod === null} {...register("password", { required: { value: true, message: "Password is required" }, minLength: { value: 8, message: "Minimum length is 8 characters" }, maxLength: { value: 20, message: "Maximum length is 20 characters" }, pattern: { value: /^(?=.*[@#$^&_-])[A-Za-z0-9@#$^&_-]+$/, message: "Use letters, numbers, and @, #, $, ^, &, or -." } })} className="border-2 bg-white border-[var(--primary-color)]/25 focus:border-[var(--primary-color)] transition-all rounded-xl p-3 disabled:cursor-not-allowed disabled:bg-black/25 w-full" type={showPassword ? "text" : "password"} id="password" placeholder="Password" />
                 {showPassword ?
-                  <PiEye size="2rem" className={`absolute top-1/2 -translate-y-1/2 right-2 ${loginMethod === null ? "text-black cursor-not-allowed" : "text-[var(--primary-color)] cursor-pointer"}`} onClick={() => setShowPassword(!showPassword)} /> :
-                  <PiEyeSlash size="2rem" className={`absolute top-1/2 -translate-y-1/2 right-2 ${loginMethod === null ? "text-black cursor-not-allowed" : "text-[var(--primary-color)] cursor-pointer"}`} onClick={() => setShowPassword(!showPassword)} />
+                  <PiEye size="2rem" className={`absolute top-1/2 -translate-y-1/2 right-2 ${loginMethod === null ? "text-black pointer-events-none" : "text-[var(--primary-color)] cursor-pointer"}`} onClick={() => setShowPassword(!showPassword)} /> :
+                  <PiEyeSlash size="2rem" className={`absolute top-1/2 -translate-y-1/2 right-2 ${loginMethod === null ? "text-black pointer-events-none" : "text-[var(--primary-color)] cursor-pointer"}`} onClick={() => setShowPassword(!showPassword)} />
                 }
               </div>
               {errors.password && <span className="text-red-500 text-sm">{errors.password.message}</span>}
