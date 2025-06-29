@@ -40,8 +40,8 @@ const NotFound = () => {
         <h2 className="text-4xl max-lg:text-3xl max-[30rem]:text-2xl font-bold">Looks like you&apos;ve found the doorway to the great nothing</h2>
         <p className="text-xl max-lg:text-lg max-[30rem]:text-base font-semibold">The content you&apos;re looking for doesn&apos;t exist. Either it was removed, or you mistyped the link.</p>
         <div className="flex gap-8 max-lg:gap-6 max-[30rem]:!text-base">
-          <button onClick={() => router.replace("/")} className="primaryBtn">Go To Home</button>
-          <button onClick={handleGoBack} className="relative group primaryBtn !bg-transparent !text-[var(--primary-color)] border-2 border-[var(--primary-color)] flex items-center overflow-hidden">
+          <button onClick={() => { setIsPageLoaded(false); router.replace("/") }} className="primaryBtn">Go To Home</button>
+          <button onClick={() => { setIsPageLoaded(false); handleGoBack() }} className="relative group primaryBtn !bg-transparent !text-[var(--primary-color)] border-2 border-[var(--primary-color)] flex items-center overflow-hidden">
             <IoMdArrowRoundBack size={20} className="absolute -left-5 group-hover:left-3 transition-all duration-300" />
             <div className="group-hover:pl-5 transition-all duration-300">Go Back</div>
           </button>

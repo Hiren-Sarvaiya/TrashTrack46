@@ -8,6 +8,7 @@ import { deleteToken } from "@/app/deleteToken/actions"
 import { usePathname } from "next/navigation"
 import { RxHamburgerMenu } from "react-icons/rx"
 import { useEffect, useRef } from "react"
+import logo from "@/assets/images/logo.png"
 
 const Header = () => {
   const { isLoggedIn, setIsLoggedIn, user, setIsPageLoaded, stopAuthCheckInterval, setIsAuthCycleOn, displayNavLinks, setDisplayNavLinks } = useAppContext()
@@ -55,7 +56,7 @@ const Header = () => {
         <div className="logoContainer">
           <Link onClick={(e) => handleLinkClick("/", e)} href="/">
             <div className="relative cursor-pointer h-16 w-64 max-[824px]:w-48">
-              <Image src="/assets/images/logo2.png" alt="logo" fill style={{ objectFit: "contain" }} priority />
+              <Image src={logo} alt="logo" fill style={{ objectFit: "contain" }} priority />
             </div>
           </Link>
         </div>
