@@ -3,9 +3,6 @@ const nextConfig = {
   images: {
     domains: ["res.cloudinary.com", "images.unsplash.com"],
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   experimental: {
     serverActions: true,
   },

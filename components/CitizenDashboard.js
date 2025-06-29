@@ -220,7 +220,7 @@ const CitizenDashboard = () => {
                 </div>
                 <div className="font-mono max-[30rem]:text-sm h-fit bg-[var(--primary-color)]/50 px-3 py-1 rounded-md w-fit">{reportCategories.find(element => element.value === expandedReport.category)?.label}</div>
                 <div className="text-justify text-lg max-[55rem]:text-base max-[30rem]:text-sm"><span className="font-semibold">DESCRIPTION : </span>{expandedReport.desc}</div>
-                {expandedReport.officerResponse && <div className="text-justify text-lg max-[55rem]:text-base max-[30rem]:text-sm"><span className="font-semibold">OFFICER'S RESPONSE : </span>{expandedReport.officerResponse}</div>}
+                {expandedReport.officerResponse && <div className="text-justify text-lg max-[55rem]:text-base max-[30rem]:text-sm"><span className="font-semibold">OFFICER&apos;S RESPONSE : </span>{expandedReport.officerResponse}</div>}
                 <div className="text-justify"><span className="font-semibold text-lg max-[55rem]:text-base max-[30rem]:text-sm">ADDRESS :</span> {`${expandedReport.address}, ${expandedReport.city.split(" ").map(value => value[0].toUpperCase() + value.slice(1)).join(" ")}, ${expandedReport.state.split(" ").map(value => value[0].toUpperCase() + value.slice(1)).join(" ")} - ${expandedReport.pincode}`}</div>
                 {expandedReport.resolvedBy && <div className="text-lg max-[55rem]:text-base max-[30rem]:text-sm"><span className="font-semibold">RESOLVED BY :</span> {expandedReport.resolvedBy}</div>}
                 {expandedReport.images.length !== 0 && (

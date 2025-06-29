@@ -37,8 +37,8 @@ const NotFound = () => {
         </div>
       </div>
       <div className="right font-[Public_sans] w-2/5 max-lg:w-[45%] max-md:w-full flex flex-col items-start gap-6 max-md:gap-3">
-        <h2 className="text-4xl max-lg:text-3xl max-[30rem]:text-2xl font-bold">Looks like you've found the doorway to the great nothing</h2>
-        <p className="text-xl max-lg:text-lg max-[30rem]:text-base font-semibold">The content you're looking for doesn't exist. Either it was removed, or you mistyped the link.</p>
+        <h2 className="text-4xl max-lg:text-3xl max-[30rem]:text-2xl font-bold">Looks like you&apos;ve found the doorway to the great nothing</h2>
+        <p className="text-xl max-lg:text-lg max-[30rem]:text-base font-semibold">The content you&apos;re looking for doesn&apos;t exist. Either it was removed, or you mistyped the link.</p>
         <div className="flex gap-8 max-lg:gap-6 max-[30rem]:!text-base">
           <button onClick={() => router.replace("/")} className="primaryBtn">Go To Home</button>
           <button onClick={handleGoBack} className="relative group primaryBtn !bg-transparent !text-[var(--primary-color)] border-2 border-[var(--primary-color)] flex items-center overflow-hidden">

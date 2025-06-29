@@ -291,7 +291,7 @@ const OfficerDashboard = () => {
                   )}
                 </div>
                 <div className="text-justify text-lg max-[55rem]:text-base max-[30rem]:text-sm"><span className="font-semibold">DESCRIPTION : </span>{expandedReport.desc}</div>
-                {expandedReport.officerResponse && <div className="text-justify text-lg max-[55rem]:text-base max-[30rem]:text-sm"><span className="font-semibold">OFFICER'S RESPONSE : </span>{expandedReport.officerResponse}</div>}
+                {expandedReport.officerResponse && <div className="text-justify text-lg max-[55rem]:text-base max-[30rem]:text-sm"><span className="font-semibold">OFFICER&apos;S RESPONSE : </span>{expandedReport.officerResponse}</div>}
                 <div className="text-justify"><span className="font-semibold text-lg max-[55rem]:text-base max-[30rem]:text-sm">ADDRESS :</span> {`${expandedReport.address}, ${expandedReport.city.split(" ").map(value => value[0].toUpperCase() + value.slice(1)).join(" ")}, ${expandedReport.state.split(" ").map(value => value[0].toUpperCase() + value.slice(1)).join(" ")} - ${expandedReport.pincode}`}</div>
                 <div className="text-lg max-[55rem]:text-base max-[30rem]:text-sm">{!expandedReport.isAnonymous ? <><span className="font-semibold">SUBMITTED BY :</span> {expandedReport.submittedBy}</> : "REPORTED ANONYMOUSLY"}</div>
                 {expandedReport.resolvedBy && <div className="text-lg max-[55rem]:text-base max-[30rem]:text-sm"><span className="font-semibold">RESOLVED BY :</span> {expandedReport.resolvedBy}</div>}

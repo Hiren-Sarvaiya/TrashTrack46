@@ -196,8 +196,8 @@ const Insights = () => {
                 <ResponsiveContainer className="select-none max-sm:text-sm">
                   <PieChart margin={chartsStyles.margin}>
                     <Legend iconType="circle" />
-                    <Tooltip contentStyle={chartsStyles.contentStyle} itemStyle={{ color: chartsStyles.color }} formatter={(v) => (v === 0 ? null : v)} labelFormatter={(l) => (l === 0 ? '' : l)} />
-                    <Pie data={chart.data} cx="50%" cy="50%" outerRadius={chartsStyles.outerRadius} fill="#d3935c" nameKey="label" dataKey="value" stroke={chart.data.length === 1 ? "none" : "#fff"} labelLine={false} label={renderCustomizedLabel} activeShape={{ stroke: 'none' }} activeIndex={-1}>
+                    <Tooltip contentStyle={chartsStyles.contentStyle} itemStyle={{ color: chartsStyles.color }} formatter={(v) => (v === 0 ? null : v)} labelFormatter={(l) => (l === 0 ? "" : l)} />
+                    <Pie data={chart.data} cx="50%" cy="50%" outerRadius={chartsStyles.outerRadius} fill="#d3935c" nameKey="label" dataKey="value" stroke={chart.data.length === 1 ? "none" : "#fff"} labelLine={false} label={renderCustomizedLabel} activeShape={{ stroke: "none" }} activeIndex={-1}>
                       {chart.data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)}
                     </Pie>
                   </PieChart>

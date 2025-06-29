@@ -119,7 +119,7 @@ const Login = () => {
               <input disabled={loginMethod === null || isSubmittingData} className={`primaryBtn ${loginMethod === null && "disabled:bg-[var(--primary-color)]! disabled:hover:bg-black/25! disabled:text-white!"}`} type="submit" value="SUBMIT" />
               {isSubmittingData && <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-all group-hover:scale-105 group-active:scale-100 max-sm:text-sm"><BtnLoader /></div>}
             </div>
-            <p className="text-center">Don't have an account? <Link className="link" href="/register">Register</Link></p>
+            <p className="text-center">Don&apos;t have an account? <Link className="link" href="/register">Register</Link></p>
           </form>
         </div>
       </section>

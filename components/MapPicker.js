@@ -26,7 +26,7 @@ export default function LeafletMap({ position, setPosition, onLocationSelect }) 
       <TileLayer
         // this lyrs=m means normal map and s for satellite
         url="https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}"
-        subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
+        subdomains={["mt0", "mt1", "mt2", "mt3"]}
       />
       <LocationMarker />
     </MapContainer>
