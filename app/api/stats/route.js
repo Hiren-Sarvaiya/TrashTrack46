@@ -1,9 +1,11 @@
 import User from "@/lib/models/User"
 import Report from "@/lib/models/Report"
 import { NextResponse } from "next/server"
+import connectDB from "@/lib/db"
 
 export async function GET() {
   try {
+    await connectDB()
     const usersCount = await User.countDocuments()
     const reportsCount = await Report.countDocuments()
     const reports = await Report.find()
