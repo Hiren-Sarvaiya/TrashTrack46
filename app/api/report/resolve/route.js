@@ -1,10 +1,12 @@
 import { NextResponse } from "next/server"
 import Report from "@/lib/models/Report"
 import { uploadToCloudinary, deleteFromCloudinary } from "@/lib/imagesHandlers"
+import connectDB from "@/lib/db"
 
 export async function POST(req) {
   const imageFiles = []
   try {
+    await connectDB()
     const { searchParams } = new URL(req.url)
     const reportId = searchParams.get("reportId")
     if (!reportId) return NextResponse.json({ message: "Id is required" }, { status: 400 })

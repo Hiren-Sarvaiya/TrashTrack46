@@ -3,9 +3,11 @@ import User from "@/lib/models/User"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import { cookies } from "next/headers"
+import connectDB from "@/lib/db"
 
 export async function POST(req) {
   try {
+    await connectDB()
     const { name, email, mobile, role, password, address, state, city, pincode } = await req.json()
 
     if (!name || !email || !mobile || !role || !password || !address || !state || !city || !pincode) return NextResponse.json({ message: "All fields are required" }, { status: 400 })

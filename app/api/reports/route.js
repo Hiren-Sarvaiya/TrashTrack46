@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server"
 import Report from "@/lib/models/Report"
+import connectDB from "@/lib/db"
 
 export async function GET(req) {
   try {
+    await connectDB()
     const { searchParams } = new URL(req.url)
     const skip = parseInt(searchParams.get("skip") || "0")
     const limit = parseInt(searchParams.get("limit") || "20")

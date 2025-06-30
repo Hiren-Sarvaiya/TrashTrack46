@@ -3,6 +3,7 @@ import Report from "@/lib/models/Report"
 import bcrypt from "bcryptjs"
 import { v2 as cloudinary } from "cloudinary"
 import { uploadToCloudinary, deleteFromCloudinary } from "@/lib/imagesHandlers"
+import connectDB from "@/lib/db"
 
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
@@ -13,6 +14,7 @@ cloudinary.config({
 export async function POST(req) {
   const imageFiles = []
   try {
+    await connectDB()
     const formData = await req.formData()
     const title = formData.get("title")?.trim()
     const desc = formData.get("desc")?.trim()
@@ -60,6 +62,7 @@ export async function POST(req) {
 
 export async function GET(req) {
   try {
+    await connectDB()
     const { searchParams } = new URL(req.url)
     const reportId = searchParams.get("reportId")
 
@@ -76,6 +79,7 @@ export async function GET(req) {
 
 export async function DELETE(req) {
   try {
+    await connectDB()
     const { searchParams } = new URL(req.url)
     const reportId = searchParams.get("reportId")
     if (!reportId) return NextResponse.json({ message: "Report id is required" }, { status: 400 })
