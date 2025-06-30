@@ -17,6 +17,7 @@ export async function GET(req) {
     const { name, email, mobile, role, address, state, city, pincode, registeredAt } = user
     return NextResponse.json({ authenticated: true, user: { name, email, mobile, role, address, state, city, pincode, registeredAt } })
   } catch (err) {
+    console.error("Error in authentication : ", err)
     return NextResponse.json({ authenticated: false })
   }
 }

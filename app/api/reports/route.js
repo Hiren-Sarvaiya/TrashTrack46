@@ -61,7 +61,7 @@ export async function GET(req) {
       return NextResponse.json({ success: true, reports: allReports }, { status: 200 })
     }
   } catch (err) {
-    console.log(err)
-    return NextResponse.json({ message: "Error fetching reports", error: err.message }, { status: 500 })
+    console.log("Error getting reports : ", err)
+    return NextResponse.json({ message: "Error fetching reports" }, { status: 500 })
   }
 }

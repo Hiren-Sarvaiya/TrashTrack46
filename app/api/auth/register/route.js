@@ -23,7 +23,7 @@ export async function POST(req) {
     const { name: userName, email: userEmail, mobile: userMobile, role: userRole, address: userAddress, state: userState, city: userCity, pincode: userPincode, registeredAt } = user
     return NextResponse.json({ success: true, user: { name: userName, email: userEmail, mobile: userMobile, role: userRole, address: userAddress, state: userState, city: userCity, pincode: userPincode, registeredAt } }, { status: 200 })
   } catch (err) {
-    console.log(err)
-    return NextResponse.json({ message: "Error in registration", error: err.message }, { status: 500 })
+    console.log("Error in registration : ", err)
+    return NextResponse.json({ message: "Error in registration" }, { status: 500 })
   }
 }

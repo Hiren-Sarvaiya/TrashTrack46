@@ -7,6 +7,7 @@ import Footer from "@/components/Footer"
 import { cookies } from "next/headers"
 import { AuthProvider } from "@/context/AppContext"
 import ClientWrapper from "@/components/ClientWrapper"
+import RouteTracker from "@/components/RouteTracker"
 
 await connectDB()
 
@@ -29,6 +30,7 @@ export default async function RootLayout({ children }) {
         <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
       </head>
       <body className="min-h-dvh flex flex-col">
+        <RouteTracker />
         <AuthProvider token={token}>
           <Header />
           <ClientWrapper>{children}</ClientWrapper>

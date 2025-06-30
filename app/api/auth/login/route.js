@@ -27,7 +27,7 @@ export async function POST(req) {
     const { name, email: userEmail, mobile: userMobile, role, address, state, city, pincode, registeredAt } = user
     return NextResponse.json({ success: true, user: { name, email: userEmail, mobile: userMobile, role, address, state, city, pincode, registeredAt } }, { status: 200 })
   } catch (err) {
-    console.log(err)
-    return NextResponse.json({ message: "Error in login", error: err.message }, { status: 500 })
+    console.log("Error logging in : ", err)
+    return NextResponse.json({ message: "Error in login" }, { status: 500 })
   }
 }

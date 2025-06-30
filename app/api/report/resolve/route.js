@@ -41,6 +41,6 @@ export async function POST(req) {
         }
       }
     }
-    return NextResponse.json({ message: "Error resolving report", error: err.message }, { status: 500 })
+    return NextResponse.json({ message: "Error resolving report" }, { status: 500 })
   }
 }

@@ -9,8 +9,9 @@ const NotFound = () => {
   const { setIsPageLoaded } = useAppContext()
   const router = useRouter()
 
-  function handleGoBack() {
-    if (window.history.length > 1) window.history.back()
+  const handleGoBack = () => {
+    const prev = sessionStorage.getItem("prev-page")
+    if (prev) router.replace(prev)
     else router.replace("/")
   }
 

@@ -46,7 +46,7 @@ export async function POST(req) {
 
     return NextResponse.json({ success: true, message: "Report submitted successfully" }, { status: 200 })
   } catch (err) {
-    console.error(err)
+    console.error("Error submitting report : ", err)
     if (imageFiles.length > 0) {
       for (const img of imageFiles) {
         try {
@@ -56,7 +56,7 @@ export async function POST(req) {
         }
       }
     }
-    return NextResponse.json({ message: "Error submitting report", error: err.message }, { status: 500 })
+    return NextResponse.json({ message: "Error submitting report" }, { status: 500 })
   }
 }
 
@@ -72,8 +72,8 @@ export async function GET(req) {
       return NextResponse.json({ success: true, report }, { status: 200 })
     } else return NextResponse.json({ message: "Report id is required" }, { status: 400 })
   } catch (err) {
-    console.error(err)
-    return NextResponse.json({ message: "Error fetching report", error: err.message }, { status: 500 })
+    console.error("Error getting the report : ", err)
+    return NextResponse.json({ message: "Error fetching report" }, { status: 500 })
   }
 }
 
@@ -100,7 +100,7 @@ export async function DELETE(req) {
 
     return NextResponse.json({ success: true, message: "Report deleted successfully" }, { status: 200 })
   } catch (err) {
-    console.log(err)
-    return NextResponse.json({ message: "Error deleting report", error: err.message }, { status: 500 })
+    console.log("Error deleting report : ", err)
+    return NextResponse.json({ message: "Error deleting report" }, { status: 500 })
   }
 }

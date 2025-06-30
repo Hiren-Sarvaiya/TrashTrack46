@@ -29,6 +29,16 @@ const Login = () => {
     }
   }, [])
 
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search)
+    if (searchParams.get("error") === "protectedApiOrPage") {
+      toast.error("Access denied. Login first!")
+      searchParams.delete("error")
+      const newUrl = `${window.location.pathname}?${searchParams.toString()}`
+      window.history.replaceState({}, "", newUrl)
+    }
+  }, [])
+
   const onSubmit = async (data) => {
     try {
       document.activeElement.blur()
