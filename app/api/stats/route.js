@@ -14,6 +14,7 @@ export async function GET() {
     }
     return NextResponse.json({ success: true, statsData })
   } catch (err) {
-    return NextResponse.json({ success: false, message: "Failed to count users", err: err }, { status: 500 })
+    console.error(err)
+    return NextResponse.json({ message: "Failed to count users", error: err.message }, { status: 500 })
   }
 }
