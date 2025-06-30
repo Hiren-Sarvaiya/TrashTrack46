@@ -287,7 +287,7 @@ const OfficerDashboard = () => {
                 <div className="flex max-[32rem]:flex-col justify-between gap-4 max-[32rem]:gap-2">
                   <div className="font-mono max-[30rem]:text-sm h-fit bg-[var(--primary-color)]/50 px-3 py-1 rounded-md w-fit">{reportCategories.find(element => element.value === expandedReport.category)?.label}</div>
                   {expandedReport.status === "pending" && (
-                    <button onClick={() => { setIsPageLoaded(false); setIsResolveLoading(true); router.push(`/resolve?reportId=${expandedReport._id}`) }} className="primaryBtn max-[32rem]:!px-3 max-[32rem]:!py-1 max-[30rem]:text-sm">Resolve</button>
+                    <button onClick={() => { setIsPageLoaded(false); router.push(`/resolve?reportId=${expandedReport._id}`) }} className="primaryBtn max-[32rem]:!px-3 max-[32rem]:!py-1 max-[30rem]:text-sm">Resolve</button>
                   )}
                 </div>
                 <div className="text-justify text-lg max-[55rem]:text-base max-[30rem]:text-sm"><span className="font-semibold">DESCRIPTION : </span>{expandedReport.desc}</div>
